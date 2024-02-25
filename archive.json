@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-22T01:09:51.524230+00:00",
+  "timestamp": "2024-02-25T01:14:15.763104+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -206,9 +206,17 @@
       "labels": [],
       "body": "`spaceCost` can be required to be a power of two.",
       "createdAt": "2024-01-20T16:41:51Z",
-      "updatedAt": "2024-01-20T16:41:51Z",
+      "updatedAt": "2024-02-23T18:40:56Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "Another approach would be using UInt128 and doing NIST's [Simple Modular Method](https://crypto.stackexchange.com/a/50569). However, that goes against #1 unless UInt64 is replaced with UInt128 everywhere.",
+          "createdAt": "2024-02-23T18:40:55Z",
+          "updatedAt": "2024-02-23T18:40:55Z"
+        }
+      ]
     },
     {
       "number": 10,
@@ -227,5 +235,42 @@
       "comments": []
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 11,
+      "id": "PR_kwDOK_bi8M5nra-D",
+      "title": "Add implementations for Dart, Julia, Kotlin, Ruby",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/pull/11",
+      "state": "MERGED",
+      "author": "elliotwutingfeng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I've implemented Balloon in Dart, Julia, Kotlin, and Ruby. Mostly as programming exercises to familiarise myself with said languages. They are all direct ports of [nachonavarro/balloon-hashing](https://github.com/nachonavarro/balloon-hashing). Feel free to include them in the README.",
+      "createdAt": "2024-02-22T18:11:59Z",
+      "updatedAt": "2024-02-23T18:41:17Z",
+      "baseRepository": "samuel-lucas6/draft-lucas-balloon-hashing",
+      "baseRefName": "main",
+      "baseRefOid": "de520e78f3fb57cbbbb5b150d9a5d39227c74f21",
+      "headRepository": "elliotwutingfeng/draft-lucas-balloon-hashing",
+      "headRefName": "patch-1",
+      "headRefOid": "2b8021f9f66ad95136376375d3ff6b11c3aaf59c",
+      "closedAt": "2024-02-23T18:33:58Z",
+      "mergedAt": "2024-02-23T18:33:58Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "aebec5f69d1fc31108afa098a5152143d2bab61b"
+      },
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "Awesome, sorry I missed them.\r\n\r\nPlease keep an eye on this repository because there will eventually be breaking changes to the algorithm.",
+          "createdAt": "2024-02-23T18:33:27Z",
+          "updatedAt": "2024-02-23T18:33:27Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
 }
