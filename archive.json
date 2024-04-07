@@ -1,0 +1,276 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-04-07T01:17:17.866446+00:00",
+  "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOK_bi8M563z51",
+      "title": "Use UInt64 instead of BigInteger",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/1",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The `other` variable currently uses `BigInteger` before being converted to an `Int32`:\r\n\r\n```c#\r\nfor (int i = 0; i < delta; i++) {\r\n\tIntsToBlock(idxBlock, t, m, i);\r\n\tHash(idxBlock, counter++, salt, idxBlock);\r\n\tvar other = new BigInteger(idxBlock, isUnsigned: true, isBigEndian: false) % spaceCost;\r\n\tHash(buffer[m], counter++, buffer[m], buffer[(int)other]);\r\n}\r\n```\r\n\r\nThis is done for interoperability with [existing implementations](https://github.com/RustCrypto/password-hashes/pull/232), but it seems preferable to use `UInt64` like everywhere else. However, this would mean all implementations would have to be updated in line with the draft.",
+      "createdAt": "2024-01-01T09:50:04Z",
+      "updatedAt": "2024-01-01T09:50:04Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOK_bi8M5630W8",
+      "title": "Provide generic parameters/safe minimums",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/2",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [TobTu](https://tobtu.com/), the [Argon2 RFC](https://www.rfc-editor.org/rfc/rfc9106.html), etc provide recommended parameters. It would be good to do the same assuming they are realistic, but there's no guidance on parameters from the authors of Balloon. Furthermore, Balloon hasn't been benchmarked properly with different hash functions and parameters to determine suitable recommendations.",
+      "createdAt": "2024-01-01T09:54:00Z",
+      "updatedAt": "2024-01-01T09:54:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOK_bi8M56304F",
+      "title": "Should delta be fixed?",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/3",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The current draft allows the `delta` parameter to be configured, but this parameter isn't very well explained in the [paper](https://eprint.iacr.org/2016/027) and adds confusion for the user. Some [existing implementations](https://github.com/RustCrypto/password-hashes/tree/master/balloon-hash) don't allow this parameter to be adjusted.",
+      "createdAt": "2024-01-01T09:58:25Z",
+      "updatedAt": "2024-01-20T17:20:24Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "This will be fixed at 3 in the next version of the draft.",
+          "createdAt": "2024-01-20T17:20:23Z",
+          "updatedAt": "2024-01-20T17:20:23Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOK_bi8M5632p5",
+      "title": "Support key derivation properly",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/4",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Balloon has a limited output length, with the [paper](http://eprint.iacr.org/2016/027) only discussing it in terms of being a password hashing algorithm, not a password-based key derivation function. By contrast, [Wikipedia](https://en.wikipedia.org/wiki/Balloon_hashing) and [NIST](https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final) call it a PBKDF.\r\n\r\nIt would be nice to have longer outputs, like with [scrypt](https://www.rfc-editor.org/rfc/rfc7914) and [Argon2](https://www.rfc-editor.org/rfc/rfc9106.html), without bringing in another primitive. For example, by doing something akin to [NIST's One-Step KDF](https://csrc.nist.gov/pubs/sp/800/56/c/r2/final) or [NIST's KDF in Feedback Mode](https://csrc.nist.gov/pubs/sp/800/108/r1/final). However, XOF functionality should be used when available like NIST's KDF using KMAC but for algorithms such as SHAKE and BLAKE3.\r\n\r\nLike #1, this would be a breaking change for existing implementations.",
+      "createdAt": "2024-01-01T10:12:01Z",
+      "updatedAt": "2024-01-01T10:12:36Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOK_bi8M5633Pp",
+      "title": "Treat Balloon as one algorithm",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/5",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, Balloon and Balloon-M are both specified, with Balloon-M recommended if doing a cryptographic library implementation. I don't like algorithms with multiple variants as it complicates things, so perhaps only Balloon-M should be specified, with Balloon treated as an internal function like what [scrypt](https://www.rfc-editor.org/rfc/rfc7914#section-6) does with `scryptROMix`.",
+      "createdAt": "2024-01-01T10:16:39Z",
+      "updatedAt": "2024-01-20T17:22:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "Balloon-M will be renamed to Balloon in the next version of the draft, and the current Balloon function will have to be renamed to something else (e.g. EME for Expand Mix Extract). This will leave one algorithm with support for parallelism.",
+          "createdAt": "2024-01-20T17:22:55Z",
+          "updatedAt": "2024-01-20T17:22:55Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOK_bi8M56334O",
+      "title": "Missing maximum constants",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/6",
+      "state": "CLOSED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The parameters should have a maximum length like in the [Argon2 RFC](https://www.rfc-editor.org/rfc/rfc9106.html#section-3.1). `MAX_SPACECOST`, `MAX_TIMECOST`, `MAX_PARALLELISM`, and `MAX_DELTA` can be added as well as some for the password, salt, and output lengths.",
+      "createdAt": "2024-01-01T10:21:35Z",
+      "updatedAt": "2024-01-20T17:01:54Z",
+      "closedAt": "2024-01-20T17:01:54Z",
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOK_bi8M5634V2",
+      "title": "Support for a pepper",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/7",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "A secret key could be supported like in [Argon2](https://www.rfc-editor.org/rfc/rfc9106.html#section-3.1). However, I'm not convinced this is a good idea because encrypting password hashes is [preferable](https://github.com/paragonie/password_lock?tab=readme-ov-file#how-is-this-different-than-peppering), as explained in the Security Considerations section. Supporting this would suggest otherwise, even though it could be useful for key derivation.",
+      "createdAt": "2024-01-01T10:25:30Z",
+      "updatedAt": "2024-01-01T10:25:30Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOK_bi8M576e96",
+      "title": "Reading about Balloon",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/8",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "I won't understand everything, but I can perhaps try and summarise bits in the Security Considerations section or use findings to inform tweaks. There are [lots](https://eprint.iacr.org/archive/versions/2016/027) of versions of the Balloon paper, so I'm not going to attempt to identify the differences between each one.\r\n\r\n- [x] [Balloon Hashing: Provably Space-Hard Hash Functions with Data-Independent Access Patterns](https://eprint.iacr.org/archive/2016/027/20160114:175127) (original Balloon paper)\r\n- [x] [Balloon Hashing: A Memory-Hard Function Providing Provable Protection Against Sequential Attacks](https://eprint.iacr.org/2016/027) (newest Balloon paper)\r\n- [x] [Balloon Hashing Asiacrypt 2016 talk](https://youtu.be/7vs47CYnDsQ) ([slides](https://people.csail.mit.edu/henrycg/files/academic/pres/asiacrypt16balloon-slides.pdf))\r\n- [ ] [Proof of Space from Stacked Expanders](https://eprint.iacr.org/2016/333)\r\n- [x] [Towards Practical Attacks on Argon2i and Balloon Hashing](https://eprint.iacr.org/2016/759)\r\n- [ ] [Depth-Robust Graphs and Their Cumulative Memory Complexity](https://eprint.iacr.org/2016/875)\r\n- [x] [Depth Robust Graphs and Their Cumulative Memory Complexity Eurocrypt 2017 talk](https://youtu.be/K1BdGP2ffSI) ([slides](https://eurocrypt.iacr.org/2017/slides/B05-depth-robust.pdf))\r\n- [x] [Bandwidth Hard Functions for ASIC Resistance](https://eprint.iacr.org/2017/225)\r\n\r\n[Link](https://eprint.iacr.org/search?q=balloon&title=&authors=&category=&submittedafter=&submittedbefore=&revisedafter=&revisedbefore=) to the full search results on ePrint Archive.\r\n\r\n",
+      "createdAt": "2024-01-12T14:10:52Z",
+      "updatedAt": "2024-01-27T17:22:45Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOK_bi8M58s6qv",
+      "title": "Fix the modulo bias",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/9",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "`spaceCost` can be required to be a power of two.",
+      "createdAt": "2024-01-20T16:41:51Z",
+      "updatedAt": "2024-02-23T18:40:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "Another approach would be using UInt128 and doing NIST's [Simple Modular Method](https://crypto.stackexchange.com/a/50569). However, that goes against #1 unless UInt64 is replaced with UInt128 everywhere.",
+          "createdAt": "2024-02-23T18:40:55Z",
+          "updatedAt": "2024-02-23T18:40:55Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOK_bi8M58s-1n",
+      "title": "Create a release for the interoperable version",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/10",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Publishing an Internet-Draft for the version interoperable with current implementations will likely cause confusion when breaking changes are made to improve the algorithm. Therefore, I will create a GitHub release instead for future reference if people need backwards compatibility.",
+      "createdAt": "2024-01-20T17:18:48Z",
+      "updatedAt": "2024-01-20T17:18:49Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 11,
+      "id": "PR_kwDOK_bi8M5nra-D",
+      "title": "Add implementations for Dart, Julia, Kotlin, Ruby",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/pull/11",
+      "state": "MERGED",
+      "author": "elliotwutingfeng",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I've implemented Balloon in Dart, Julia, Kotlin, and Ruby. Mostly as programming exercises to familiarise myself with said languages. They are all direct ports of [nachonavarro/balloon-hashing](https://github.com/nachonavarro/balloon-hashing). Feel free to include them in the README.",
+      "createdAt": "2024-02-22T18:11:59Z",
+      "updatedAt": "2024-02-23T18:41:17Z",
+      "baseRepository": "samuel-lucas6/draft-lucas-balloon-hashing",
+      "baseRefName": "main",
+      "baseRefOid": "de520e78f3fb57cbbbb5b150d9a5d39227c74f21",
+      "headRepository": "elliotwutingfeng/draft-lucas-balloon-hashing",
+      "headRefName": "patch-1",
+      "headRefOid": "2b8021f9f66ad95136376375d3ff6b11c3aaf59c",
+      "closedAt": "2024-02-23T18:33:58Z",
+      "mergedAt": "2024-02-23T18:33:58Z",
+      "mergedBy": "samuel-lucas6",
+      "mergeCommit": {
+        "oid": "aebec5f69d1fc31108afa098a5152143d2bab61b"
+      },
+      "comments": [
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "Awesome, sorry I missed them.\r\n\r\nPlease keep an eye on this repository because there will eventually be breaking changes to the algorithm.",
+          "createdAt": "2024-02-23T18:33:27Z",
+          "updatedAt": "2024-02-23T18:33:27Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}
