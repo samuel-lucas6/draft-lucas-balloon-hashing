@@ -1125,10 +1125,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-balloon-function" class="internal xref">The Balloon Function</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-expand-mix-extract-eme-" class="internal xref">The Expand-Mix-Extract (EME) Function</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-balloon-m-function" class="internal xref">The Balloon-M Function</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-balloon-algorithm" class="internal xref">The Balloon Algorithm</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-implementation-consideratio" class="internal xref">Implementation Considerations</a></p>
@@ -1166,7 +1166,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-balloon-sha-256" class="internal xref">Balloon-SHA-256</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-eme-sha-256" class="internal xref">EME-SHA-256</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.1">
                     <p id="section-toc.1-1.13.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-test-vector-1" class="internal xref">Test Vector 1</a></p>
@@ -1180,7 +1180,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
-                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-balloon-m-sha-256" class="internal xref">Balloon-M-SHA-256</a></p>
+                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-balloon-sha-256" class="internal xref">Balloon-SHA-256</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.1">
                     <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-test-vector-1-2" class="internal xref">Test Vector 1</a></p>
@@ -1318,17 +1318,17 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </ul>
 </section>
 </div>
-<div id="the-balloon-function">
+<div id="the-expand-mix-extract-eme-function">
 <section id="section-3">
-      <h2 id="name-the-balloon-function">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-balloon-function" class="section-name selfRef">The Balloon Function</a>
+      <h2 id="name-the-expand-mix-extract-eme-">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-expand-mix-extract-eme-" class="section-name selfRef">The Expand-Mix-Extract (EME) Function</a>
       </h2>
 <div class="alignLeft art-text artwork" id="section-3-1">
 <pre>
-Balloon(password, salt, spaceCost, timeCost, delta)
+EME(password, salt, spaceCost, timeCost, delta)
 </pre><a href="#section-3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-3-2">The Balloon function can be divided into three steps:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">The EME function can be divided into three steps:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-3-3">
 <li id="section-3-3.1">
           <p id="section-3-3.1.1">Expand: a large buffer is filled with pseudorandom bytes derived by repeatedly hashing the password and salt. This buffer is divided into blocks the size of the hash function output length.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
@@ -1394,17 +1394,17 @@ return buffer[spaceCost - 1]
 </div>
 </section>
 </div>
-<div id="the-balloon-m-function">
+<div id="the-balloon-algorithm">
 <section id="section-4">
-      <h2 id="name-the-balloon-m-function">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-balloon-m-function" class="section-name selfRef">The Balloon-M Function</a>
+      <h2 id="name-the-balloon-algorithm">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-balloon-algorithm" class="section-name selfRef">The Balloon Algorithm</a>
       </h2>
 <div class="alignLeft art-text artwork" id="section-4-1">
 <pre>
-BalloonM(password, salt, spaceCost, timeCost, parallelism, delta)
+Balloon(password, salt, spaceCost, timeCost, parallelism, delta)
 </pre><a href="#section-4-1" class="pilcrow">¶</a>
 </div>
-<p id="section-4-2">A limitation of Balloon is that it lacks parallelism because the value of each block depends on the value of the previous block. Balloon-M addresses this by invoking Balloon in parallel using multiple cores, XORing the outputs, and hashing the password, salt, and XORed output concatenated together. This provides greater memory hardness without increasing the delay.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">A limitation of EME is that it lacks parallelism because the value of each block depends on the value of the previous block. Balloon addresses this by invoking EME in parallel using multiple cores, XORing the outputs, and hashing the password, salt, and XORed output concatenated together. This provides greater memory hardness without increasing the delay.<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Inputs:<a href="#section-4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4-4.1">
@@ -1420,7 +1420,7 @@ BalloonM(password, salt, spaceCost, timeCost, parallelism, delta)
           <p id="section-4-4.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-4-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-4.5">
-          <p id="section-4-4.5.1"><code>parallelism</code>: the number of CPU cores/Balloon calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-4-4.5.1" class="pilcrow">¶</a></p>
+          <p id="section-4-4.5.1"><code>parallelism</code>: the number of CPU cores/EME calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-4-4.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-4-4.6">
           <p id="section-4-4.6.1"><code>delta</code>: the number of dependencies per block (a security parameter), which <span class="bcp14">MUST</span> be an integer between <code>MIN_DELTA</code> and <code>MAX_DELTA</code>.<a href="#section-4-4.6.1" class="pilcrow">¶</a></p>
@@ -1439,7 +1439,7 @@ outputs = List(parallelism, HASH_LEN)
 
 parallel for i = 0 to parallelism - 1
     newSalt = salt || LE64(i + 1)
-    outputs[i] = Balloon(password, newSalt, spaceCost, timeCost, delta)
+    outputs[i] = EME(password, newSalt, spaceCost, timeCost, delta)
 
 foreach output in outputs
     for i = 0 to output.Length - 1
@@ -1455,12 +1455,11 @@ return Hash(password || salt || hash)
       <h2 id="name-implementation-consideratio">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
       </h2>
-<p id="section-5-1">In the context of a cryptographic library, it is <span class="bcp14">RECOMMENDED</span> to only provide users access to Balloon-M. Otherwise, users will be left wondering which variant to use and may incorrectly believe Balloon-M with <code>parallelism = 1</code> is equivalent to Balloon.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Implementations <span class="bcp14">MAY</span> hardcode <code>delta = MIN_DELTA</code> to avoid user confusion since other password hashing algorithms do not have this parameter. Moreover, the performance/security tradeoff is unclear from the paper.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">Whilst the pseudocode uses a list of byte arrays for the buffer, slicing portions of a single large byte array to access/update blocks will likely be more performant.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">Similarly, using a byte array counter instead of an integer that gets repeatedly converted to a byte array will likely aid performance.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">With Balloon-M, the XORing of outputs can be skipped if <code>parallelism = 1</code>.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">Finally, it is recommended to use an incremental hash function API rather than manually copying byte arrays to concatenate inputs as this is cleaner and may be more efficient.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-1">Implementations <span class="bcp14">MAY</span> hardcode <code>delta = MIN_DELTA</code> to avoid user confusion since other password hashing algorithms do not have this parameter. Moreover, the performance/security tradeoff is unclear from the paper.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Whilst the pseudocode uses a list of byte arrays for the buffer, slicing portions of a single large byte array to access/update blocks will likely be more performant.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">Similarly, using a byte array counter instead of an integer that gets repeatedly converted to a byte array will likely aid performance.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">The XORing of outputs can be skipped if <code>parallelism = 1</code>.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">Finally, it is recommended to use an incremental hash function API rather than manually copying byte arrays to concatenate inputs as this is cleaner and may be more efficient.<a href="#section-5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="choosing-the-hash-function">
@@ -1492,7 +1491,7 @@ return Hash(password || salt || hash)
           <p id="section-7-3.1.1">If configurable in the implementation, set <code>delta</code> to 3. This value is used in the paper <span>[<a href="#BCS16" class="cite xref">BCS16</a>]</span>.<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-3.2">
-          <p id="section-7-3.2.1">If using Balloon-M, set the <code>parallelism</code> to 1 on a server and 4 otherwise. This assumes most user devices have at least 4 CPU cores.<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-7-3.2.1">Set the <code>parallelism</code> to 1 on a server and 4 otherwise. This assumes most user devices have at least 4 CPU cores.<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-3.3">
           <p id="section-7-3.3.1">Establish the maximum acceptable delay for the user. For example, 100-500 ms for authentication, 250-1000 ms for file encryption, and 1000-5000 ms for disk encryption. On servers, you also need to factor in the maximum number of authentication attempts per second.<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
@@ -1530,7 +1529,7 @@ $balloon-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
           <p id="section-8-3.1.1"><code>balloon-hash</code>: where <code>hash</code> is the proper, correctly punctuated name of the hash function in lowercase. For example, <code>sha-256</code>, not <code>sha256</code>. Another example is <code>sha3-256</code>, not <code>sha3256</code> or <code>sha-3-256</code>. Finally, <code>sha-512-256</code> for SHA-512 truncated to 256 bits, and <code>sha-512/256</code> for the SHA-512/256 algorithm.<a href="#section-8-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.2">
-          <p id="section-8-3.2.1"><code>v=version</code>: this is version 1 of Balloon. If the design is modified, the version will be incremented.<a href="#section-8-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-8-3.2.1"><code>v=version</code>: this is version 2 of Balloon. If the design is modified, the version will be incremented.<a href="#section-8-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.3">
           <p id="section-8-3.3.1"><code>m=spaceCost</code>: the memory size in blocks, not KiB.<a href="#section-8-3.3.1" class="pilcrow">¶</a></p>
@@ -1539,7 +1538,7 @@ $balloon-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
           <p id="section-8-3.4.1"><code>t=timeCost</code>: the number of rounds.<a href="#section-8-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.5">
-          <p id="section-8-3.5.1"><code>p=parallelism</code>: 0 if Balloon and 1+ for Balloon-M.<a href="#section-8-3.5.1" class="pilcrow">¶</a></p>
+          <p id="section-8-3.5.1"><code>p=parallelism</code>: the number of CPU cores/EME calls in parallel.<a href="#section-8-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.6">
           <p id="section-8-3.6.1"><code>salt</code>: the salt encoded in Base64 with no padding <span>[<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>.<a href="#section-8-3.6.1" class="pilcrow">¶</a></p>
@@ -1708,10 +1707,10 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
       <h2 id="name-test-vectors">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<div id="balloon-sha-256">
+<div id="eme-sha-256">
 <section id="appendix-A.1">
-        <h3 id="name-balloon-sha-256">
-<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-balloon-sha-256" class="section-name selfRef">Balloon-SHA-256</a>
+        <h3 id="name-eme-sha-256">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-eme-sha-256" class="section-name selfRef">EME-SHA-256</a>
         </h3>
 <div id="test-vector-1">
 <section id="appendix-A.1.1">
@@ -1781,10 +1780,10 @@ hash: 20aa99d7fe3f4df4bd98c655c5480ec98b143107a331fd491deda885c4d6a6cc
 </div>
 </section>
 </div>
-<div id="balloon-m-sha-256">
+<div id="balloon-sha-256">
 <section id="appendix-A.2">
-        <h3 id="name-balloon-m-sha-256">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-balloon-m-sha-256" class="section-name selfRef">Balloon-M-SHA-256</a>
+        <h3 id="name-balloon-sha-256">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-balloon-sha-256" class="section-name selfRef">Balloon-SHA-256</a>
         </h3>
 <div id="test-vector-1-1">
 <section id="appendix-A.2.1">
@@ -1891,8 +1890,8 @@ hash: f8767fe04059cef67b4427cda99bf8bcdd983959dbd399a5e63ea04523716c23
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">Balloon was designed by Dan Boneh, Henry Corrigan-Gibbs, and Stuart Schechter.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">Thank you to the Rust Crypto contributors for making Balloon implementations interoperable and Henry Corrigan-Gibbs for his helpful comments.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The original version of Balloon was designed by Dan Boneh, Henry Corrigan-Gibbs, and Stuart Schechter.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">Thank you to Henry Corrigan-Gibbs for his helpful comments.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
