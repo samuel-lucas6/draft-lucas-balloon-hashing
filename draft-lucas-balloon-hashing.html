@@ -1271,13 +1271,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.9.1"><code>Hash(a)</code>: collision-resistant hashing of the byte array <code>a</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
-          <p id="section-2-4.10.1"><code>BI(a)</code>: the conversion of byte array <code>a</code> into an unsigned, little-endian BigInteger.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.10.1"><code>LE64(x)</code>: the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.11">
-          <p id="section-2-4.11.1"><code>INT32(x)</code>: the casting of BigInteger <code>x</code> into a signed 32-bit integer.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>LE64(x)</code>: the little-endian encoding of unsigned 64-bit integer <code>x</code>.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.11.1"><code>ReadLE64(a)</code>: the conversion of byte array <code>a</code> into an unsigned, little-endian 64-bit integer.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">Constants:<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -1380,8 +1377,8 @@ for t = 0 to timeCost - 1
         for i = 0 to DELTA - 1
             idxBlock = Hash(LE64(t) || LE64(m) || LE64(i))
             idxBlock = Hash(LE64(counter++) || salt || idxBlock)
-            other = BI(idxBlock) % spaceCost
-            buffer[m] = Hash(LE64(counter++) || buffer[m] || buffer[INT32(other)])
+            other = ReadLE64(idxBlock.Slice(0, 8)) % spaceCost
+            buffer[m] = Hash(LE64(counter++) || buffer[m] || buffer[other])
 
 return buffer[spaceCost - 1]
 </pre><a href="#section-3-9" class="pilcrow">¶</a>
