@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-12T01:21:07.576566+00:00",
+  "timestamp": "2024-05-14T01:15:40.098075+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOK_bi8M563z51",
       "title": "Use UInt64 instead of BigInteger",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "The `other` variable currently uses `BigInteger` before being converted to an `Int32`:\r\n\r\n```c#\r\nfor (int i = 0; i < delta; i++) {\r\n\tIntsToBlock(idxBlock, t, m, i);\r\n\tHash(idxBlock, counter++, salt, idxBlock);\r\n\tvar other = new BigInteger(idxBlock, isUnsigned: true, isBigEndian: false) % spaceCost;\r\n\tHash(buffer[m], counter++, buffer[m], buffer[(int)other]);\r\n}\r\n```\r\n\r\nThis is done for interoperability with [existing implementations](https://github.com/RustCrypto/password-hashes/pull/232), but it seems preferable to use `UInt64` like everywhere else. However, this would mean all implementations would have to be updated in line with the draft.",
       "createdAt": "2024-01-01T09:50:04Z",
-      "updatedAt": "2024-01-01T09:50:04Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-12T13:54:41Z",
+      "closedAt": "2024-05-12T13:54:41Z",
       "comments": []
     },
     {
@@ -87,15 +87,15 @@
       "id": "I_kwDOK_bi8M56304F",
       "title": "Should delta be fixed?",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "The current draft allows the `delta` parameter to be configured, but this parameter isn't very well explained in the [paper](https://eprint.iacr.org/2016/027) and adds confusion for the user. Some [existing implementations](https://github.com/RustCrypto/password-hashes/tree/master/balloon-hash) don't allow this parameter to be adjusted.",
       "createdAt": "2024-01-01T09:58:25Z",
-      "updatedAt": "2024-01-20T17:20:24Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-12T11:29:54Z",
+      "closedAt": "2024-05-12T11:29:54Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -127,15 +127,15 @@
       "id": "I_kwDOK_bi8M5633Pp",
       "title": "Treat Balloon as one algorithm",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Currently, Balloon and Balloon-M are both specified, with Balloon-M recommended if doing a cryptographic library implementation. I don't like algorithms with multiple variants as it complicates things, so perhaps only Balloon-M should be specified, with Balloon treated as an internal function like what [scrypt](https://www.rfc-editor.org/rfc/rfc7914#section-6) does with `scryptROMix`.",
       "createdAt": "2024-01-01T10:16:39Z",
-      "updatedAt": "2024-01-20T17:22:56Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-12T11:24:37Z",
+      "closedAt": "2024-05-12T11:24:37Z",
       "comments": [
         {
           "author": "samuel-lucas6",
@@ -223,15 +223,15 @@
       "id": "I_kwDOK_bi8M58s-1n",
       "title": "Create a release for the interoperable version",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Publishing an Internet-Draft for the version interoperable with current implementations will likely cause confusion when breaking changes are made to improve the algorithm. Therefore, I will create a GitHub release instead for future reference if people need backwards compatibility.",
       "createdAt": "2024-01-20T17:18:48Z",
-      "updatedAt": "2024-01-20T17:18:49Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-12T11:03:34Z",
+      "closedAt": "2024-05-12T11:03:34Z",
       "comments": []
     }
   ],
