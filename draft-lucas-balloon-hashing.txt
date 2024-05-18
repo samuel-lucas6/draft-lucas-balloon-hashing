@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               12 May 2024
-Expires: 13 November 2024
+Intended status: Informational                               18 May 2024
+Expires: 19 November 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 November 2024.
+   This Internet-Draft will expire on 19 November 2024.
 
 Copyright Notice
 
@@ -172,7 +172,7 @@ Table of Contents
 
    *  MIN_SPACECOST: the minimum space cost, which is 1.
 
-   *  MAX_SPACECOST: the maximum space cost, which is 4294967295.
+   *  MAX_SPACECOST: the maximum space cost, which is 4294967296.
 
    *  MIN_TIMECOST: the minimum time cost, which is 1.
 
@@ -212,8 +212,8 @@ Table of Contents
       bytes long.
 
    *  spaceCost: the memory size in blocks, which MUST be an integer
-      between MIN_SPACECOST and MAX_SPACECOST.  A block is the size of
-      the hash function output length in bytes.
+      between MIN_SPACECOST and MAX_SPACECOST that is a power of 2.  A
+      block is the size of the hash function output length in bytes.
 
    *  timeCost: the number of rounds, which MUST be an integer between
       MIN_TIMECOST and MAX_TIMECOST.
@@ -269,8 +269,8 @@ return buffer[spaceCost - 1]
       bytes long.
 
    *  spaceCost: the memory size in blocks, which MUST be an integer
-      between MIN_SPACECOST and MAX_SPACECOST.  A block is the size of
-      the hash function output length in bytes.
+      between MIN_SPACECOST and MAX_SPACECOST that is a power of 2.  A
+      block is the size of the hash function output length in bytes.
 
    *  timeCost: the number of rounds, which MUST be an integer between
       MIN_TIMECOST and MAX_TIMECOST.
@@ -356,8 +356,8 @@ return buffer[spaceCost - 1]
        account different types of user devices and denial-of-service.
        For instance, mobile phones versus laptops/desktops.
 
-   4.  Convert the MiB/GiB memory size to bytes.  Then set spaceCost to
-       bytes / HASH_LEN, which is the number of blocks.
+   4.  Convert the power of 2 MiB/GiB memory size to bytes.  Then set
+       spaceCost to bytes / HASH_LEN, which is the number of blocks.
 
    5.  Find the timeCost that brings you closest to the maximum
        acceptable delay or target number of authentication attempts per
