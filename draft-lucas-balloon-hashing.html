@@ -1225,7 +1225,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-2.4.1">It is easy to implement whilst being fast enough for real-world use.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-3">Unfortunately, the paper did not fully specify the algorithm nor provide guidance on parameters. Therefore, this document aims to rectify the situation based on existing interoperable implementations, real-world password hashing guidance, and research since the paper.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">Unfortunately, the paper did not fully specify the algorithm nor provide guidance on parameters. Furthermore, the algorithm was not designed with key derivation in mind and had multiple variants.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document rectifies these issues by specifying an encoding, preventing canonicalization attacks, fixing the modulo bias, making delta a constant, treating Balloon and Balloon-M as one algorithm, and adding support for key derivation.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">

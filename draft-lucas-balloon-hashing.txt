@@ -112,10 +112,13 @@ Table of Contents
       use.
 
    Unfortunately, the paper did not fully specify the algorithm nor
-   provide guidance on parameters.  Therefore, this document aims to
-   rectify the situation based on existing interoperable
-   implementations, real-world password hashing guidance, and research
-   since the paper.
+   provide guidance on parameters.  Furthermore, the algorithm was not
+   designed with key derivation in mind and had multiple variants.
+
+   This document rectifies these issues by specifying an encoding,
+   preventing canonicalization attacks, fixing the modulo bias, making
+   delta a constant, treating Balloon and Balloon-M as one algorithm,
+   and adding support for key derivation.
 
 2.  Conventions and Definitions
 
