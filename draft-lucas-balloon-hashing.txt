@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               18 May 2024
-Expires: 19 November 2024
+Intended status: Informational                               19 May 2024
+Expires: 20 November 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 November 2024.
+   This Internet-Draft will expire on 20 November 2024.
 
 Copyright Notice
 
@@ -70,12 +70,11 @@ Table of Contents
    6.  Choosing the Hash Function
    7.  Choosing the Parameters
    8.  Encoding Password Hashes
-   9.  Performing Key Derivation
-   10. Security Considerations
-   11. IANA Considerations
-   12. References
-     12.1.  Normative References
-     12.2.  Informative References
+   9.  Security Considerations
+   10. IANA Considerations
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  EME-SHA-256
        A.1.1.  Test Vector 1
@@ -158,6 +157,8 @@ Table of Contents
    *  ReadLE64(a): the conversion of byte array a into an unsigned,
       little-endian 64-bit integer.
 
+   *  Ceiling(x): rounds the integer x up to the nearest whole number.
+
    Constants:
 
    *  HASH_LEN: the output length of the hash function in bytes.  For an
@@ -181,6 +182,8 @@ Table of Contents
    *  MIN_PARALLELISM: the minimum parallelism, which is 1.
 
    *  MAX_PARALLELISM: the maximum parallelism, which is 16777215.
+
+   *  MAX_LENGTH: the maximum output length, which is 4294967295.
 
    *  DELTA: the number of dependencies per block (a security
       parameter), which is 3.
@@ -251,14 +254,14 @@ return buffer[spaceCost - 1]
 
 4.  The Balloon Algorithm
 
-   Balloon(password, salt, spaceCost, timeCost, parallelism)
+   Balloon(password, salt, spaceCost, timeCost, parallelism, length)
 
    A limitation of EME is that it lacks parallelism because the value of
    each block depends on the value of the previous block.  Balloon
    addresses this by invoking EME in parallel using multiple cores,
-   XORing the outputs, and hashing the password, salt, and XORed output
-   concatenated together.  This provides greater memory hardness without
-   increasing the delay.
+   XORing the outputs, and hashing the password, salt, output length,
+   and XORed output to derive key material.  This provides greater
+   memory hardness without increasing the delay.
 
    Inputs:
 
@@ -278,24 +281,34 @@ return buffer[spaceCost - 1]
    *  parallelism: the number of CPU cores/EME calls in parallel, which
       MUST be an integer between MIN_PARALLELISM and MAX_PARALLELISM.
 
+   *  length: the length of the password hash/derived key in bytes,
+      which MUST NOT be greater than MAX_LENGTH.
+
    Outputs:
 
-   *  The password hash/derived key the size of the hash function output
-      length.
+   *  The password hash/derived key, which is length bytes long.
 
    Steps:
 
-   outputs = List(parallelism, HASH_LEN)
+outputs = List(parallelism, HASH_LEN)
 
-   parallel for i = 0 to parallelism - 1
-       newSalt = salt || LE64(i + 1)
-       outputs[i] = EME(password, newSalt, spaceCost, timeCost)
+parallel for i = 0 to parallelism - 1
+    newSalt = salt || LE64(i + 1)
+    outputs[i] = EME(password, newSalt, spaceCost, timeCost)
 
-   foreach output in outputs
-       for i = 0 to output.Length - 1
-           hash[i] = hash[i] ^ output[i]
+foreach output in outputs
+    for i = 0 to output.Length - 1
+        hash[i] = hash[i] ^ output[i]
 
-   return Hash(password || salt || hash)
+key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
+
+counter = 1
+reps = Ceiling(length / HASH_LEN)
+for i = 0 to reps
+        key = Hash(key || LE64(counter++))
+        result = result || key
+
+return result.Slice(0, length)
 
 5.  Implementation Considerations
 
@@ -373,7 +386,7 @@ return buffer[spaceCost - 1]
 
    In all cases, it is RECOMMENDED to use a 128- or 256-bit salt.  Other
    salt lengths SHOULD NOT be used, and the salt length SHOULD NOT vary
-   in your protocol/application.  See Section 10 for guidance on
+   in your protocol/application.  See Section 9 for guidance on
    generating the salt.
 
 8.  Encoding Password Hashes
@@ -407,21 +420,7 @@ return buffer[spaceCost - 1]
 
 $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
 
-9.  Performing Key Derivation
-
-   As Balloon produces outputs the size of the hash function output
-   length, there is a limit on the size of derived keys.  To derive
-   larger/multiple keys, the output can be fed into a KDF, like HKDF-
-   Expand [RFC5869], or an XOF, like SHAKE [FIPS202].  In both cases,
-   domain separation SHOULD be specified, such as the protocol/
-   application name and purpose of the derived key.
-
-   When the Balloon output is too large, it can be truncated to the
-   required key size by taking the first portion of the output.  For
-   example, taking the first 256 bits of a 512-bit output.
-   Alternatively, a KDF or XOF can be used, as discussed above.
-
-10.  Security Considerations
+9.  Security Considerations
 
    Balloon has been proven sequentially memory-hard in the random-oracle
    model and uses a password-independent memory access pattern to
@@ -507,13 +506,13 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
    of Balloon, and none of these papers have analysed the version used
    in real-world implementations.
 
-11.  IANA Considerations
+10.  IANA Considerations
 
    This document has no IANA actions.
 
-12.  References
+11.  References
 
-12.1.  Normative References
+11.1.  Normative References
 
    [FIPS202]  National Institute of Standards and Technology, "FIPS PUB
               202 - SHA-3 Standard: Permutation-Based Hash and
@@ -529,11 +528,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/rfc/rfc4648>.
 
-   [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
-              Key Derivation Function (HKDF)", RFC 5869,
-              DOI 10.17487/RFC5869, May 2010,
-              <https://www.rfc-editor.org/rfc/rfc5869>.
-
    [RFC6234]  Eastlake 3rd, D. and T. Hansen, "US Secure Hash Algorithms
               (SHA and SHA-based HMAC and HKDF)", RFC 6234,
               DOI 10.17487/RFC6234, May 2011,
@@ -548,7 +542,7 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-12.2.  Informative References
+11.2.  Informative References
 
    [AB16]     Alwen, J. and J. Blocki, "Efficiently Computing Data-
               Independent Memory-Hard Functions", Advances in Cryptology
