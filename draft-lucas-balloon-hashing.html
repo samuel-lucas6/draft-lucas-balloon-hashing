@@ -1334,7 +1334,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <div class="alignLeft art-text artwork" id="section-3-1">
 <pre>
-EME(password, salt, spaceCost, timeCost)
+EME(password, salt, spaceCost, timeCost, parallelism)
 </pre><a href="#section-3-1" class="pilcrow">¶</a>
 </div>
 <p id="section-3-2">The EME function can be divided into three steps:<a href="#section-3-2" class="pilcrow">¶</a></p>
@@ -1363,11 +1363,14 @@ EME(password, salt, spaceCost, timeCost)
         <li class="normal" id="section-3-5.4">
           <p id="section-3-5.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-5.4.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="section-3-5.5">
+          <p id="section-3-5.5.1"><code>parallelism</code>: the number of CPU cores/EME calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-3-5.5.1" class="pilcrow">¶</a></p>
+</li>
       </ul>
 <p id="section-3-6">Outputs:<a href="#section-3-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-7.1">
-          <p id="section-3-7.1.1">The password hash/derived key the size of the hash function output length.<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
+          <p id="section-3-7.1.1">The password hash, which is <code>HASH_LEN</code> bytes long.<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-3-8">Steps:<a href="#section-3-8" class="pilcrow">¶</a></p>
@@ -1376,7 +1379,7 @@ EME(password, salt, spaceCost, timeCost)
 buffer = List(spaceCost, HASH_LEN)
 counter = 0
 
-buffer[0] = Hash(LE64(counter++) || password || salt || LE64(password.Length) || LE64(salt.Length))
+buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(password.Length) || LE64(salt.Length))
 for m = 1 to spaceCost - 1
     buffer[m] = Hash(LE64(counter++) || buffer[m - 1])
 
