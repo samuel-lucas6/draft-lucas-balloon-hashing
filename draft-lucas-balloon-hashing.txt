@@ -309,8 +309,8 @@ key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || 
 counter = 1
 reps = Ceiling(length / HASH_LEN)
 for i = 0 to reps
-        key = Hash(key || LE64(counter++))
-        result = result || key
+    key = Hash(key || LE64(counter++))
+    result = result || key
 
 return result.Slice(0, length)
 
