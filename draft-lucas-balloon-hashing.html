@@ -1283,7 +1283,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.11.1"><code>ReadLE64(a)</code>: the conversion of byte array <code>a</code> into an unsigned, little-endian 64-bit integer.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>Ceiling(x)</code>: rounds the integer <code>x</code> up to the nearest whole number.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.12.1"><code>UTF8(s)</code>: the UTF-8 encoding of string <code>s</code>.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.13">
+          <p id="section-2-4.13.1"><code>Ceiling(x)</code>: rounds the integer <code>x</code> up to the nearest whole number.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">Constants:<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -1452,9 +1455,10 @@ key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || 
 
 counter = 1
 reps = Ceiling(length / HASH_LEN)
+previous = List(1, 0)
 for i = 0 to reps
-    key = Hash(key || LE64(counter++))
-    result = result || key
+    previous = Hash(key || previous || LE64(counter++) || UTF8("balloon"))
+    result = result || previous
 
 return result.Slice(0, length)
 </pre><a href="#section-4-8" class="pilcrow">¶</a>
