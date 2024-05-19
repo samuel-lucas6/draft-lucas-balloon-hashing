@@ -92,9 +92,8 @@ Table of Contents
 
    Balloon [BCS16] is a memory-hard password hashing and password-based
    key derivation function that was published shortly after the Password
-   Hashing Competition (PHC), which recommended Argon2 [RFC9106].  It is
-   mentioned in a NIST Special Publication on authentication [SP800-63B]
-   and has several advantages over prior password hashing algorithms:
+   Hashing Competition (PHC), which recommended Argon2 [RFC9106].  It
+   has several advantages over prior password hashing algorithms:
 
    *  It has proven memory-hardness properties, making it resistant
       against sequential GPU/ASIC attacks.  An adversary trying to save
@@ -617,14 +616,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               Hashing and Proof-of-Work Applications", RFC 9106,
               DOI 10.17487/RFC9106, September 2021,
               <https://www.rfc-editor.org/rfc/rfc9106>.
-
-   [SP800-63B]
-              Grassi, P., Newton, E., Fenton, J., Perlner, R.,
-              Regenscheid, A., Burr, W., Richer, J., Lefkovitz, N.,
-              Danker, J., Choong, Y., Greene, K., and M. Theofanos,
-              "NIST SP 800-63B - Digital Identity Guidelines:
-              Authentication and Lifecycle Management", 2017,
-              <https://doi.org/10.6028/NIST.SP.800-63b>.
 
 Appendix A.  Test Vectors
 
