@@ -71,6 +71,8 @@ Table of Contents
    7.  Choosing the Parameters
    8.  Encoding Password Hashes
    9.  Security Considerations
+     9.1.  Usage Guidelines
+     9.2.  Security Guarantees
    10. IANA Considerations
    11. References
      11.1.  Normative References
@@ -424,29 +426,11 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 
 9.  Security Considerations
 
-   Balloon has been proven sequentially memory-hard in the random-oracle
-   model and uses a password-independent memory access pattern to
-   prevent side-channel attacks leaking information about the password
-   [BCS16].  However, no function that uses a password-independent
-   memory access pattern can be optimally memory-hard in the parallel
-   setting [AB16].  In other words, Balloon is inherently weaker against
-   parallel attacks.
+9.1.  Usage Guidelines
 
-   To improve Balloon’s resistance to parallel attacks, the output can
-   be fed into a password hashing function with a password-dependent
-   memory access pattern, such as scrypt [RFC7914].  The cost of this
-   approach is like increasing the timeCost of Balloon [BCS16].
-   However, even this does not defend against an attacker who can both
-   a) obtain memory access pattern information and b) perform a
-   massively parallel attack; it only protects against the two attacks
-   separately.
-
-   The security properties of Balloon depend on the chosen collision-
-   resistant hash function/XOF.  For example, a 256-bit hash should
-   provide 128-bit collision resistance and 256-bit (second) preimage
-   resistance.  Technically, only preimage resistance is required for
-   password hashing to prevent the attacker learning information about
-   the password from the hash.  However, non-collision-resistant hash
+   Technically, only preimage resistance is required for password
+   hashing to prevent the attacker learning information about the
+   password from the hash.  However, non-collision-resistant hash
    functions (e.g.  MD5 [RFC6151] and SHA-1 [RFC6194]) MUST NOT be used.
    Such functions are cryptographically weak and unsuitable for new
    protocols.
@@ -467,7 +451,7 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
    for overly large user-specified parameters (e.g. passwords) to
    prevent denial-of-service attacks.
 
-   Avoid using hardcoded parameters (e.g. spaceCost/timeCost) when
+   Avoid using hardcoded spaceCost/timeCost/parallelism parameters when
    performing password hashing; these SHOULD be stored as part of the
    password hash, as described in Section 8.  With key derivation,
    hardcoded parameters are acceptable if protocol versioning is used.
@@ -493,6 +477,30 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
    decryption was successful (e.g. via an error message or timing side-
    channel).
 
+9.2.  Security Guarantees
+
+   The security properties of Balloon depend on the chosen collision-
+   resistant hash function/XOF.  For example, a 256-bit hash typically
+   provides 128-bit collision resistance and 256-bit (second) preimage
+   resistance.
+
+   Balloon has been proven sequentially memory-hard in the random-oracle
+   model and uses a password-independent memory access pattern to
+   prevent side-channel attacks leaking information about the password
+   [BCS16].  However, no function that uses a password-independent
+   memory access pattern can be optimally memory-hard in the parallel
+   setting [AB16].  In other words, Balloon is inherently weaker against
+   parallel attacks.
+
+   To improve Balloon’s resistance to parallel attacks, the output can
+   be fed into a password hashing function with a password-dependent
+   memory access pattern, such as scrypt [RFC7914] or Argon2d [RFC9106].
+   The cost of this approach is like increasing the timeCost of Balloon
+   [BCS16].  However, even this does not defend against an attacker who
+   can both a) obtain memory access pattern information and b) perform a
+   massively parallel attack; it only protects against the two attacks
+   separately.
+
    Unlike password hashing algorithms such as bcrypt [PM99], which
    perform many small pseudorandom reads, Balloon is not cache-hard.
    Whilst there are no known publications on cache-hardness at the time
@@ -505,8 +513,8 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 
    Third-party analysis for Balloon can be found in [RD16], [AB17],
    [ABP17], and [RD17].  However, note that there are multiple versions
-   of Balloon, and none of these papers have analysed the version used
-   in real-world implementations.
+   of Balloon, and none of these papers have analysed the version
+   specified in this document.
 
 10.  IANA Considerations
 
