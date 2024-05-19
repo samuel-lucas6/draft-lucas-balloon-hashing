@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-16T01:16:10.957559+00:00",
+  "timestamp": "2024-05-19T01:20:53.139286+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -199,15 +199,15 @@
       "id": "I_kwDOK_bi8M58s6qv",
       "title": "Fix the modulo bias",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "`spaceCost` can be required to be a power of two.",
       "createdAt": "2024-01-20T16:41:51Z",
-      "updatedAt": "2024-02-23T18:40:56Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-18T10:55:13Z",
+      "closedAt": "2024-05-18T10:55:13Z",
       "comments": [
         {
           "author": "samuel-lucas6",
