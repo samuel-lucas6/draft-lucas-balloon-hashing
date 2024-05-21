@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-19T01:20:53.139286+00:00",
+  "timestamp": "2024-05-21T01:16:04.705749+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -111,15 +111,15 @@
       "id": "I_kwDOK_bi8M5632p5",
       "title": "Support key derivation properly",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Balloon has a limited output length, with the [paper](http://eprint.iacr.org/2016/027) only discussing it in terms of being a password hashing algorithm, not a password-based key derivation function. By contrast, [Wikipedia](https://en.wikipedia.org/wiki/Balloon_hashing) and [NIST](https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final) call it a PBKDF.\r\n\r\nIt would be nice to have longer outputs, like with [scrypt](https://www.rfc-editor.org/rfc/rfc7914) and [Argon2](https://www.rfc-editor.org/rfc/rfc9106.html), without bringing in another primitive. For example, by doing something akin to [NIST's One-Step KDF](https://csrc.nist.gov/pubs/sp/800/56/c/r2/final) or [NIST's KDF in Feedback Mode](https://csrc.nist.gov/pubs/sp/800/108/r1/final). However, XOF functionality should be used when available like NIST's KDF using KMAC but for algorithms such as SHAKE and BLAKE3.\r\n\r\nLike #1, this would be a breaking change for existing implementations.",
       "createdAt": "2024-01-01T10:12:01Z",
-      "updatedAt": "2024-01-01T10:12:36Z",
-      "closedAt": null,
+      "updatedAt": "2024-05-19T08:47:18Z",
+      "closedAt": "2024-05-19T08:47:17Z",
       "comments": []
     },
     {
@@ -232,6 +232,38 @@
       "createdAt": "2024-01-20T17:18:48Z",
       "updatedAt": "2024-05-12T11:03:34Z",
       "closedAt": "2024-05-12T11:03:34Z",
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOK_bi8M6JW9no",
+      "title": "Prevent canonicalization attacks",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/12",
+      "state": "CLOSED",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The current concatenation of the password and salt means you can shift bytes between the two parameters and get the same output, which should not be possible.\r\n\r\nThe easiest way to fix this is to append the lengths. Technically, one length will do but both are normally included in practice (e.g., in AEAD schemes).",
+      "createdAt": "2024-05-19T08:31:53Z",
+      "updatedAt": "2024-05-19T08:50:19Z",
+      "closedAt": "2024-05-19T08:50:19Z",
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOK_bi8M6JXD4m",
+      "title": "Update the test vectors and encoded hash",
+      "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/13",
+      "state": "OPEN",
+      "author": "samuel-lucas6",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Once the design has been finalised, these need to be updated since breaking changes have been made.",
+      "createdAt": "2024-05-19T09:40:21Z",
+      "updatedAt": "2024-05-19T09:40:22Z",
+      "closedAt": null,
       "comments": []
     }
   ],
