@@ -304,6 +304,7 @@ parallel for i = 0 to parallelism - 1
     newSalt = salt || LE64(i + 1)
     outputs[i] = EME(password, newSalt, spaceCost, timeCost)
 
+hash = List(1, HASH_LEN)
 foreach output in outputs
     for i = 0 to output.Length - 1
         hash[i] = hash[i] ^ output[i]
