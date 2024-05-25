@@ -1029,7 +1029,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lucas</td>
-<td class="center">Expires 20 November 2024</td>
+<td class="center">Expires 26 November 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1042,12 +1042,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lucas-balloon-hashing-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-19" class="published">19 May 2024</time>
+<time datetime="2024-05-25" class="published">25 May 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-20">20 November 2024</time></dd>
+<dd class="expires"><time datetime="2024-11-26">26 November 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1092,7 +1092,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1473,10 +1473,27 @@ return result.Slice(0, length)
       <h2 id="name-implementation-consideratio">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
       </h2>
-<p id="section-5-1">Whilst the pseudocode uses a list of byte arrays for the buffer, slicing portions of a single large byte array to access/update blocks will likely be more performant.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Similarly, using a byte array counter instead of an integer that gets repeatedly converted to a byte array will likely aid performance.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The XORing of outputs can be skipped if <code>parallelism = 1</code>.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">Finally, it is recommended to use an incremental hash function API rather than manually copying byte arrays to concatenate inputs as this is cleaner and may be more efficient.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-1">There are several ways to optimise the pseudocode, which is written for readability:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-2.1">
+          <p id="section-5-2.1.1">Instead of using a list of byte arrays for the buffer, access portions of a single large byte array.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.2">
+          <p id="section-5-2.2.1">Instead of an integer counter that gets repeatedly converted to a byte array, allocate a byte array once and repeatedly fill that buffer or use a byte array counter.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.3">
+          <p id="section-5-2.3.1">Instead of repeatedly converting <code>timeCost</code> and <code>spaceCost</code> to bytes in the <code>DELTA</code> loop, convert them once in the outer <code>timeCost</code> and <code>spaceCost</code> loops respectively.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.4">
+          <p id="section-5-2.4.1">Skip the XORing of outputs when <code>parallelism = 1</code>.<a href="#section-5-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.5">
+          <p id="section-5-2.5.1">Convert the key derivation domain separation string to bytes once rather than in each iteration of the loop.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.6">
+          <p id="section-5-2.6.1">Use an incremental hash function API rather than manual concatenation.<a href="#section-5-2.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="choosing-the-hash-function">
