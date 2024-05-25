@@ -161,11 +161,14 @@ Table of Contents
    *  ReadLE64(a): the conversion of byte array a into an unsigned,
       little-endian 64-bit integer.
 
+   *  Ceiling(x): the integer x rounded up to the nearest whole number.
+
    *  UTF8(s): the UTF-8 encoding of string s.
 
-   *  Ceiling(x): rounds the integer x up to the nearest whole number.
-
    Constants:
+
+   *  DELTA: the number of dependencies per block (a security
+      parameter), which is 3.
 
    *  HASH_LEN: the output length of the hash function in bytes.  For an
       XOF, this is the minimum output length to obtain the maximum
@@ -190,9 +193,6 @@ Table of Contents
    *  MAX_PARALLELISM: the maximum parallelism, which is 16777215.
 
    *  MAX_LENGTH: the maximum output length, which is 4294967295.
-
-   *  DELTA: the number of dependencies per block (a security
-      parameter), which is 3.
 
 3.  The Expand-Mix-Extract (EME) Function
 
