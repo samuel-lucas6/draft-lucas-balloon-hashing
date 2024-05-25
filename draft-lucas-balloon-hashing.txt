@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               19 May 2024
-Expires: 20 November 2024
+Intended status: Informational                               25 May 2024
+Expires: 26 November 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 November 2024.
+   This Internet-Draft will expire on 26 November 2024.
 
 Copyright Notice
 
@@ -321,18 +321,27 @@ return result.Slice(0, length)
 
 5.  Implementation Considerations
 
-   Whilst the pseudocode uses a list of byte arrays for the buffer,
-   slicing portions of a single large byte array to access/update blocks
-   will likely be more performant.
+   There are several ways to optimise the pseudocode, which is written
+   for readability:
 
-   Similarly, using a byte array counter instead of an integer that gets
-   repeatedly converted to a byte array will likely aid performance.
+   *  Instead of using a list of byte arrays for the buffer, access
+      portions of a single large byte array.
 
-   The XORing of outputs can be skipped if parallelism = 1.
+   *  Instead of an integer counter that gets repeatedly converted to a
+      byte array, allocate a byte array once and repeatedly fill that
+      buffer or use a byte array counter.
 
-   Finally, it is recommended to use an incremental hash function API
-   rather than manually copying byte arrays to concatenate inputs as
-   this is cleaner and may be more efficient.
+   *  Instead of repeatedly converting timeCost and spaceCost to bytes
+      in the DELTA loop, convert them once in the outer timeCost and
+      spaceCost loops respectively.
+
+   *  Skip the XORing of outputs when parallelism = 1.
+
+   *  Convert the key derivation domain separation string to bytes once
+      rather than in each iteration of the loop.
+
+   *  Use an incremental hash function API rather than manual
+      concatenation.
 
 6.  Choosing the Hash Function
 
