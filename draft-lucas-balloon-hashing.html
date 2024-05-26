@@ -1532,7 +1532,7 @@ return result.Slice(0, length)
           <p id="section-7-3.3.1">Determine the maximum amount of memory available, taking into account different types of user devices and denial-of-service. For instance, mobile phones versus laptops/desktops.<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-3.4">
-          <p id="section-7-3.4.1">Convert the power of 2 MiB/GiB memory size to bytes. Then set <code>spaceCost</code> to <code>bytes / HASH_LEN</code>, which is the number of blocks.<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
+          <p id="section-7-3.4.1">Convert the MiB/GiB memory size that is a power of 2 to bytes. Then set <code>spaceCost</code> to <code>bytes / HASH_LEN</code>, which is the number of blocks.<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-3.5">
           <p id="section-7-3.5.1">Find the <code>timeCost</code> that brings you closest to the maximum acceptable delay or target number of authentication attempts per second by running benchmarks.<a href="#section-7-3.5.1" class="pilcrow">¶</a></p>

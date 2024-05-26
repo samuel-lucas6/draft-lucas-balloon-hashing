@@ -388,8 +388,9 @@ return result.Slice(0, length)
        account different types of user devices and denial-of-service.
        For instance, mobile phones versus laptops/desktops.
 
-   4.  Convert the power of 2 MiB/GiB memory size to bytes.  Then set
-       spaceCost to bytes / HASH_LEN, which is the number of blocks.
+   4.  Convert the MiB/GiB memory size that is a power of 2 to bytes.
+       Then set spaceCost to bytes / HASH_LEN, which is the number of
+       blocks.
 
    5.  Find the timeCost that brings you closest to the maximum
        acceptable delay or target number of authentication attempts per
