@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               25 May 2024
-Expires: 26 November 2024
+Intended status: Informational                               26 May 2024
+Expires: 27 November 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 November 2024.
+   This Internet-Draft will expire on 27 November 2024.
 
 Copyright Notice
 
@@ -222,7 +222,7 @@ Table of Contents
 
    *  spaceCost: the memory size in blocks, which MUST be an integer
       between MIN_SPACECOST and MAX_SPACECOST that is a power of 2.  A
-      block is the size of the hash function output length in bytes.
+      block is HASH_LEN bytes long.
 
    *  timeCost: the number of rounds, which MUST be an integer between
       MIN_TIMECOST and MAX_TIMECOST.
@@ -281,7 +281,7 @@ return buffer[spaceCost - 1]
 
    *  spaceCost: the memory size in blocks, which MUST be an integer
       between MIN_SPACECOST and MAX_SPACECOST that is a power of 2.  A
-      block is the size of the hash function output length in bytes.
+      block is HASH_LEN bytes long.
 
    *  timeCost: the number of rounds, which MUST be an integer between
       MIN_TIMECOST and MAX_TIMECOST.
