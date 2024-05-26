@@ -527,7 +527,7 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
    authentication scenarios but potentially less suited for key
    derivation.
 
-   Third-party analysis for Balloon can be found in [RD16], [AB17],
+   Third-party analysis of Balloon can be found in [RD16], [AB17],
    [ABP17], and [RD17].  However, note that there are multiple versions
    of Balloon, and none of these papers have analysed the version
    specified in this document.
