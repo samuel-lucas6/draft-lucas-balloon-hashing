@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               26 May 2024
-Expires: 27 November 2024
+Intended status: Informational                               28 May 2024
+Expires: 29 November 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 November 2024.
+   This Internet-Draft will expire on 29 November 2024.
 
 Copyright Notice
 
@@ -314,6 +314,7 @@ key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || 
 counter = 1
 reps = Ceiling(length / HASH_LEN)
 previous = List(1, 0)
+result = List(1, 0)
 for i = 0 to reps
     previous = Hash(key || previous || LE64(counter++) || UTF8("balloon"))
     result = result || previous
