@@ -209,8 +209,8 @@ Table of Contents
        block, the current block, and delta other blocks ‘pseudorandomly’
        chosen from the buffer based on the salt.
 
-   3.  Extract: the last block of the buffer is output as the password
-       hash/derived key.
+   3.  Extract: the last block of the buffer is output for key
+       derivation.
 
    Inputs:
 
