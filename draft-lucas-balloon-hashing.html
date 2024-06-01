@@ -1025,11 +1025,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Balloon Hashing</td>
-<td class="right">May 2024</td>
+<td class="right">June 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lucas</td>
-<td class="center">Expires 29 November 2024</td>
+<td class="center">Expires 3 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1042,12 +1042,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lucas-balloon-hashing-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-28" class="published">28 May 2024</time>
+<time datetime="2024-06-01" class="published">1 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-29">29 November 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-03">3 December 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1092,7 +1092,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1600,7 +1600,7 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
         </h3>
 <p id="section-9.1-1">Technically, only preimage resistance is required for password hashing to prevent the attacker learning information about the password from the hash. However, non-collision-resistant hash functions (e.g. MD5 <span>[<a href="#RFC6151" class="cite xref">RFC6151</a>]</span> and SHA-1 <span>[<a href="#RFC6194" class="cite xref">RFC6194</a>]</span>) <span class="bcp14">MUST NOT</span> be used. Such functions are cryptographically weak and unsuitable for new protocols.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">If possible, store the password in protected memory and/or erase the password from memory once it is no longer required. Otherwise, an attacker may be able to recover the password from memory or the disk.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
-<p id="section-9.1-3">The salt <span class="bcp14">MUST</span> be unique. It <span class="bcp14">SHOULD</span> be randomly generated using a cryptographically secure pseudorandom number generator (CSPRNG). However, it <span class="bcp14">MAY</span> be deterministic and predictable if random generation is not possible. It <span class="bcp14">SHOULD</span> be at least 128 bits long and <span class="bcp14">SHOULD NOT</span> exceed 256 bits.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">The salt <span class="bcp14">MUST</span> be unique each time you call the function unless verifying a password hash or deriving the same key. It <span class="bcp14">SHOULD</span> be randomly generated using a cryptographically secure pseudorandom number generator (CSPRNG). However, it <span class="bcp14">MAY</span> be deterministic and predictable if random generation is not possible. It <span class="bcp14">SHOULD</span> be at least 128 bits long and <span class="bcp14">SHOULD NOT</span> exceed 256 bits.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 <p id="section-9.1-4">The <code>spaceCost</code>, <code>timeCost</code>, and <code>parallelism</code> <span class="bcp14">MUST</span> be carefully chosen to avoid denial-of-service and user frustration whilst ensuring adequate protection against password cracking. Similarly, systems <span class="bcp14">MUST</span> check for overly large user-specified parameters (e.g. passwords) to prevent denial-of-service attacks.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
 <p id="section-9.1-5">Avoid using hardcoded <code>spaceCost</code>/<code>timeCost</code>/<code>parallelism</code> parameters when performing password hashing; these <span class="bcp14">SHOULD</span> be stored as part of the password hash, as described in <a href="#encoding-password-hashes" class="auto internal xref">Section 8</a>. With key derivation, hardcoded parameters are acceptable if protocol versioning is used.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
 <p id="section-9.1-6">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to encrypt password hashes using an authenticated encryption with associated data (AEAD) scheme <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>]</span> before storage. This forces an attacker to compromise the key, which is stored separately from the database, as well as the database before they can begin password cracking. If the key is compromised but the database is not, it can be rotated without having to reset any passwords.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
