@@ -1524,7 +1524,7 @@ return result.Slice(0, length)
 <p id="section-7-2">The following procedure can be used to choose parameters:<a href="#section-7-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-7-3">
 <li id="section-7-3.1">
-          <p id="section-7-3.1.1">Set the <code>parallelism</code> to 1 on a server and 4 otherwise. This assumes most user devices have at least 4 CPU cores.<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-7-3.1.1">For performing authentication on a server or running the algorithm on any type of user device, set the <code>parallelism</code> to 1. This avoids resource exhaustion attacks and slowdowns on machines with few CPU cores. Otherwise, set it to the maximum number of CPU cores the machine can dedicate to the computation.<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-3.2">
           <p id="section-7-3.2.1">Establish the maximum acceptable delay for the user. For example, 100-500 ms for authentication, 250-1000 ms for file encryption, and 1000-5000 ms for disk encryption. On servers, you also need to factor in the maximum number of authentication attempts per second.<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
