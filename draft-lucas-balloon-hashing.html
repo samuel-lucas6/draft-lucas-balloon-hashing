@@ -1128,7 +1128,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-balloon-algorithm" class="internal xref">The Balloon Algorithm</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-expand-mix-extract-eme-" class="internal xref">The Expand-Mix-Extract (EME) Function</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-ballooncore-function" class="internal xref">The BalloonCore Function</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-implementation-consideratio" class="internal xref">Implementation Considerations</a></p>
@@ -1171,7 +1171,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-eme-sha-256" class="internal xref">EME-SHA-256</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-balloon-sha-256" class="internal xref">Balloon-SHA-256</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1.2.1">
                     <p id="section-toc.1-1.12.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-test-vector-1" class="internal xref">Test Vector 1</a></p>
@@ -1182,22 +1182,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1.2.3">
                     <p id="section-toc.1-1.12.2.1.2.3.1"><a href="#appendix-A.1.3" class="auto internal xref">A.1.3</a>.  <a href="#name-test-vector-3" class="internal xref">Test Vector 3</a></p>
 </li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-balloon-sha-256" class="internal xref">Balloon-SHA-256</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.1">
-                    <p id="section-toc.1-1.12.2.2.2.1.1"><a href="#appendix-A.2.1" class="auto internal xref">A.2.1</a>.  <a href="#name-test-vector-1-2" class="internal xref">Test Vector 1</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.2">
-                    <p id="section-toc.1-1.12.2.2.2.2.1"><a href="#appendix-A.2.2" class="auto internal xref">A.2.2</a>.  <a href="#name-test-vector-2-2" class="internal xref">Test Vector 2</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.3">
-                    <p id="section-toc.1-1.12.2.2.2.3.1"><a href="#appendix-A.2.3" class="auto internal xref">A.2.3</a>.  <a href="#name-test-vector-3-2" class="internal xref">Test Vector 3</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2.2.4">
-                    <p id="section-toc.1-1.12.2.2.2.4.1"><a href="#appendix-A.2.4" class="auto internal xref">A.2.4</a>.  <a href="#name-test-vector-4" class="internal xref">Test Vector 4</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1.2.4">
+                    <p id="section-toc.1-1.12.2.1.2.4.1"><a href="#appendix-A.1.4" class="auto internal xref">A.1.4</a>.  <a href="#name-test-vector-4" class="internal xref">Test Vector 4</a></p>
 </li>
                 </ul>
 </li>
@@ -1369,7 +1355,7 @@ outputs = List(parallelism, HASH_LEN)
 
 parallel for i = 0 to parallelism - 1
     newSalt = salt || LE64(i + 1)
-    outputs[i] = EME(password, newSalt, spaceCost, timeCost)
+    outputs[i] = BalloonCore(password, newSalt, spaceCost, timeCost)
 
 hash = List(1, HASH_LEN)
 foreach output in outputs
@@ -1391,17 +1377,17 @@ return result.Slice(0, length)
 </div>
 </section>
 </div>
-<div id="the-expand-mix-extract-eme-function">
+<div id="the-ballooncore-function">
 <section id="section-4">
-      <h2 id="name-the-expand-mix-extract-eme-">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-expand-mix-extract-eme-" class="section-name selfRef">The Expand-Mix-Extract (EME) Function</a>
+      <h2 id="name-the-ballooncore-function">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-ballooncore-function" class="section-name selfRef">The BalloonCore Function</a>
       </h2>
 <div class="alignLeft art-text artwork" id="section-4-1">
 <pre>
-EME(password, salt, spaceCost, timeCost, parallelism, length)
+BalloonCore(password, salt, spaceCost, timeCost, parallelism, length)
 </pre><a href="#section-4-1" class="pilcrow">¶</a>
 </div>
-<p id="section-4-2">The EME function is the internal function used by Balloon for memory hardness. It can be divided into three steps:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">The BalloonCore function is the internal function used by Balloon for memory hardness. It can be divided into three steps:<a href="#section-4-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4-3">
 <li id="section-4-3.1">
           <p id="section-4-3.1.1">Expand: a large buffer is filled with pseudorandom bytes derived by repeatedly hashing the user provided parameters. This buffer is divided into blocks the size of the hash function output length.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
@@ -1566,7 +1552,7 @@ $balloon-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
           <p id="section-8-3.4.1"><code>t=timeCost</code>: the number of rounds.<a href="#section-8-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.5">
-          <p id="section-8-3.5.1"><code>p=parallelism</code>: the number of CPU cores/EME calls in parallel.<a href="#section-8-3.5.1" class="pilcrow">¶</a></p>
+          <p id="section-8-3.5.1"><code>p=parallelism</code>: the number of CPU cores/internal function calls in parallel.<a href="#section-8-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.6">
           <p id="section-8-3.6.1"><code>salt</code>: the salt encoded in Base64 with no padding <span>[<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>.<a href="#section-8-3.6.1" class="pilcrow">¶</a></p>
@@ -1733,10 +1719,10 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
       <h2 id="name-test-vectors">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<div id="eme-sha-256">
+<div id="balloon-sha-256">
 <section id="appendix-A.1">
-        <h3 id="name-eme-sha-256">
-<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-eme-sha-256" class="section-name selfRef">EME-SHA-256</a>
+        <h3 id="name-balloon-sha-256">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-balloon-sha-256" class="section-name selfRef">Balloon-SHA-256</a>
         </h3>
 <div id="test-vector-1">
 <section id="appendix-A.1.1">
@@ -1753,7 +1739,9 @@ spaceCost: 1
 
 timeCost: 1
 
-hash: eefda4a8a75b461fa389c1dcfaf3e9dfacbc26f81f22e6f280d15cc18c417545
+parallelism: 1
+
+hash: 97a11df9382a788c781929831d409d3599e0b67ab452ef834718114efdcd1c6d
 </pre><a href="#appendix-A.1.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1764,75 +1752,6 @@ hash: eefda4a8a75b461fa389c1dcfaf3e9dfacbc26f81f22e6f280d15cc18c417545
 <a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-test-vector-2" class="section-name selfRef">Test Vector 2</a>
           </h4>
 <div class="alignLeft art-text artwork" id="appendix-A.1.2-1">
-<pre>
-password: 68756e7465723432
-
-salt: 6578616d706c6573616c74
-
-spaceCost: 1024
-
-timeCost: 3
-
-hash: 716043dff777b44aa7b88dcbab12c078abecfac9d289c5b5195967aa63440dfb
-</pre><a href="#appendix-A.1.2-1" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="test-vector-3">
-<section id="appendix-A.1.3">
-          <h4 id="name-test-vector-3">
-<a href="#appendix-A.1.3" class="section-number selfRef">A.1.3. </a><a href="#name-test-vector-3" class="section-name selfRef">Test Vector 3</a>
-          </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.1.3-1">
-<pre>
-password: 70617373776f7264
-
-salt:
-
-spaceCost: 3
-
-timeCost: 3
-
-hash: 20aa99d7fe3f4df4bd98c655c5480ec98b143107a331fd491deda885c4d6a6cc
-</pre><a href="#appendix-A.1.3-1" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-</section>
-</div>
-<div id="balloon-sha-256">
-<section id="appendix-A.2">
-        <h3 id="name-balloon-sha-256">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-balloon-sha-256" class="section-name selfRef">Balloon-SHA-256</a>
-        </h3>
-<div id="test-vector-1-1">
-<section id="appendix-A.2.1">
-          <h4 id="name-test-vector-1-2">
-<a href="#appendix-A.2.1" class="section-number selfRef">A.2.1. </a><a href="#name-test-vector-1-2" class="section-name selfRef">Test Vector 1</a>
-          </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.1-1">
-<pre>
-password: 70617373776f7264
-
-salt: 73616c74
-
-spaceCost: 1
-
-timeCost: 1
-
-parallelism: 1
-
-hash: 97a11df9382a788c781929831d409d3599e0b67ab452ef834718114efdcd1c6d
-</pre><a href="#appendix-A.2.1-1" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="test-vector-2-1">
-<section id="appendix-A.2.2">
-          <h4 id="name-test-vector-2-2">
-<a href="#appendix-A.2.2" class="section-number selfRef">A.2.2. </a><a href="#name-test-vector-2-2" class="section-name selfRef">Test Vector 2</a>
-          </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.2-1">
 <pre>
 password: 70617373776f7264
 
@@ -1845,16 +1764,16 @@ timeCost: 1
 parallelism: 16
 
 hash: a67b383bb88a282aef595d98697f90820adf64582a4b3627c76b7da3d8bae915
-</pre><a href="#appendix-A.2.2-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="test-vector-3-1">
-<section id="appendix-A.2.3">
-          <h4 id="name-test-vector-3-2">
-<a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-test-vector-3-2" class="section-name selfRef">Test Vector 3</a>
+<div id="test-vector-3">
+<section id="appendix-A.1.3">
+          <h4 id="name-test-vector-3">
+<a href="#appendix-A.1.3" class="section-number selfRef">A.1.3. </a><a href="#name-test-vector-3" class="section-name selfRef">Test Vector 3</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.3-1">
+<div class="alignLeft art-text artwork" id="appendix-A.1.3-1">
 <pre>
 password: 68756e7465723432
 
@@ -1867,16 +1786,16 @@ timeCost: 3
 parallelism: 4
 
 hash: 1832bd8e5cbeba1cb174a13838095e7e66508e9bf04c40178990adbc8ba9eb6f
-</pre><a href="#appendix-A.2.3-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1.3-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="test-vector-4">
-<section id="appendix-A.2.4">
+<section id="appendix-A.1.4">
           <h4 id="name-test-vector-4">
-<a href="#appendix-A.2.4" class="section-number selfRef">A.2.4. </a><a href="#name-test-vector-4" class="section-name selfRef">Test Vector 4</a>
+<a href="#appendix-A.1.4" class="section-number selfRef">A.1.4. </a><a href="#name-test-vector-4" class="section-name selfRef">Test Vector 4</a>
           </h4>
-<div class="alignLeft art-text artwork" id="appendix-A.2.4-1">
+<div class="alignLeft art-text artwork" id="appendix-A.1.4-1">
 <pre>
 password:
 
@@ -1889,7 +1808,7 @@ timeCost: 3
 parallelism: 2
 
 hash: f8767fe04059cef67b4427cda99bf8bcdd983959dbd399a5e63ea04523716c23
-</pre><a href="#appendix-A.2.4-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1.4-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>

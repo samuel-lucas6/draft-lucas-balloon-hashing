@@ -65,7 +65,7 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  The Balloon Algorithm
-   4.  The Expand-Mix-Extract (EME) Function
+   4.  The BalloonCore Function
    5.  Implementation Considerations
    6.  Choosing the Hash Function
    7.  Choosing the Parameters
@@ -78,15 +78,11 @@ Table of Contents
      11.1.  Normative References
      11.2.  Informative References
    Appendix A.  Test Vectors
-     A.1.  EME-SHA-256
+     A.1.  Balloon-SHA-256
        A.1.1.  Test Vector 1
        A.1.2.  Test Vector 2
        A.1.3.  Test Vector 3
-     A.2.  Balloon-SHA-256
-       A.2.1.  Test Vector 1
-       A.2.2.  Test Vector 2
-       A.2.3.  Test Vector 3
-       A.2.4.  Test Vector 4
+       A.1.4.  Test Vector 4
    Acknowledgments
    Author's Address
 
@@ -239,7 +235,7 @@ outputs = List(parallelism, HASH_LEN)
 
 parallel for i = 0 to parallelism - 1
     newSalt = salt || LE64(i + 1)
-    outputs[i] = EME(password, newSalt, spaceCost, timeCost)
+    outputs[i] = BalloonCore(password, newSalt, spaceCost, timeCost)
 
 hash = List(1, HASH_LEN)
 foreach output in outputs
@@ -258,12 +254,12 @@ for i = 0 to reps
 
 return result.Slice(0, length)
 
-4.  The Expand-Mix-Extract (EME) Function
+4.  The BalloonCore Function
 
-   EME(password, salt, spaceCost, timeCost, parallelism, length)
+   BalloonCore(password, salt, spaceCost, timeCost, parallelism, length)
 
-   The EME function is the internal function used by Balloon for memory
-   hardness.  It can be divided into three steps:
+   The BalloonCore function is the internal function used by Balloon for
+   memory hardness.  It can be divided into three steps:
 
    1.  Expand: a large buffer is filled with pseudorandom bytes derived
        by repeatedly hashing the user provided parameters.  This buffer
@@ -428,7 +424,8 @@ return buffer[spaceCost - 1]
 
    *  t=timeCost: the number of rounds.
 
-   *  p=parallelism: the number of CPU cores/EME calls in parallel.
+   *  p=parallelism: the number of CPU cores/internal function calls in
+      parallel.
 
    *  salt: the salt encoded in Base64 with no padding [RFC4648].
 
@@ -646,47 +643,9 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 
 Appendix A.  Test Vectors
 
-A.1.  EME-SHA-256
+A.1.  Balloon-SHA-256
 
 A.1.1.  Test Vector 1
-
-  password: 70617373776f7264
-
-  salt: 73616c74
-
-  spaceCost: 1
-
-  timeCost: 1
-
-  hash: eefda4a8a75b461fa389c1dcfaf3e9dfacbc26f81f22e6f280d15cc18c417545
-
-A.1.2.  Test Vector 2
-
-  password: 68756e7465723432
-
-  salt: 6578616d706c6573616c74
-
-  spaceCost: 1024
-
-  timeCost: 3
-
-  hash: 716043dff777b44aa7b88dcbab12c078abecfac9d289c5b5195967aa63440dfb
-
-A.1.3.  Test Vector 3
-
-  password: 70617373776f7264
-
-  salt:
-
-  spaceCost: 3
-
-  timeCost: 3
-
-  hash: 20aa99d7fe3f4df4bd98c655c5480ec98b143107a331fd491deda885c4d6a6cc
-
-A.2.  Balloon-SHA-256
-
-A.2.1.  Test Vector 1
 
   password: 70617373776f7264
 
@@ -700,7 +659,7 @@ A.2.1.  Test Vector 1
 
   hash: 97a11df9382a788c781929831d409d3599e0b67ab452ef834718114efdcd1c6d
 
-A.2.2.  Test Vector 2
+A.1.2.  Test Vector 2
 
   password: 70617373776f7264
 
@@ -714,7 +673,7 @@ A.2.2.  Test Vector 2
 
   hash: a67b383bb88a282aef595d98697f90820adf64582a4b3627c76b7da3d8bae915
 
-A.2.3.  Test Vector 3
+A.1.3.  Test Vector 3
 
   password: 68756e7465723432
 
@@ -728,7 +687,7 @@ A.2.3.  Test Vector 3
 
   hash: 1832bd8e5cbeba1cb174a13838095e7e66508e9bf04c40178990adbc8ba9eb6f
 
-A.2.4.  Test Vector 4
+A.1.4.  Test Vector 4
 
   password:
 
