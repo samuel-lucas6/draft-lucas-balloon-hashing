@@ -1269,10 +1269,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.11.1"><code>ReadLE64(a)</code>: the conversion of byte array <code>a</code> into an unsigned, little-endian 64-bit integer.<a href="#section-2-4.11.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.12">
-          <p id="section-2-4.12.1"><code>Ceiling(x)</code>: the integer <code>x</code> rounded up to the nearest whole number.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.12.1"><code>ZeroPad(a, n)</code>: byte array <code>a</code> padded with zeros until it is <code>n</code> bytes long.<a href="#section-2-4.12.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.13">
-          <p id="section-2-4.13.1"><code>UTF8(s)</code>: the UTF-8 encoding of string <code>s</code>.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.13.1"><code>Ceiling(x)</code>: the integer <code>x</code> rounded up to the nearest whole number.<a href="#section-2-4.13.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.14">
+          <p id="section-2-4.14.1"><code>UTF8(s)</code>: the UTF-8 encoding of string <code>s</code>.<a href="#section-2-4.14.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-2-5">Constants:<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -1281,31 +1284,34 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-6.1.1"><code>HASH_LEN</code>: the output length of the hash function in bytes. For an XOF, this is the minimum output length to obtain the maximum advertised security level. For example, a 256-bit output for an XOF targeting 128-bit security.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.2">
-          <p id="section-2-6.2.1"><code>MAX_PASSWORD</code>: the maximum password length, which is 4294967295 bytes.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.2.1"><code>BLOCK_LEN</code>: the block size of the hash function in bytes.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.3">
-          <p id="section-2-6.3.1"><code>MAX_SALT</code>: the maximum salt length, which is 4294967295 bytes.<a href="#section-2-6.3.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.3.1"><code>MAX_PASSWORD</code>: the maximum password length, which is 4294967295 bytes.<a href="#section-2-6.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.4">
-          <p id="section-2-6.4.1"><code>MIN_SPACECOST</code>: the minimum space cost, which is 1 as an integer.<a href="#section-2-6.4.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.4.1"><code>MAX_SALT</code>: the maximum salt length, which is 4294967295 bytes.<a href="#section-2-6.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.5">
-          <p id="section-2-6.5.1"><code>MAX_SPACECOST</code>: the maximum space cost, which is 4294967296 as an integer.<a href="#section-2-6.5.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.5.1"><code>MIN_SPACECOST</code>: the minimum space cost, which is 1 as an integer.<a href="#section-2-6.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.6">
-          <p id="section-2-6.6.1"><code>MIN_TIMECOST</code>: the minimum time cost, which is 1 as an integer.<a href="#section-2-6.6.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.6.1"><code>MAX_SPACECOST</code>: the maximum space cost, which is 4294967296 as an integer.<a href="#section-2-6.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.7">
-          <p id="section-2-6.7.1"><code>MAX_TIMECOST</code>: the maximum time cost, which is 16777215 as an integer.<a href="#section-2-6.7.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.7.1"><code>MIN_TIMECOST</code>: the minimum time cost, which is 1 as an integer.<a href="#section-2-6.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.8">
-          <p id="section-2-6.8.1"><code>MIN_PARALLELISM</code>: the minimum parallelism, which is 1 as an integer.<a href="#section-2-6.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.8.1"><code>MAX_TIMECOST</code>: the maximum time cost, which is 16777215 as an integer.<a href="#section-2-6.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.9">
-          <p id="section-2-6.9.1"><code>MAX_PARALLELISM</code>: the maximum parallelism, which is 16777215 as an integer.<a href="#section-2-6.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.9.1"><code>MIN_PARALLELISM</code>: the minimum parallelism, which is 1 as an integer.<a href="#section-2-6.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.10">
-          <p id="section-2-6.10.1"><code>MAX_LENGTH</code>: the maximum output length, which is 4294967295 as an integer.<a href="#section-2-6.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.10.1"><code>MAX_PARALLELISM</code>: the maximum parallelism, which is 16777215 as an integer.<a href="#section-2-6.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-6.11">
+          <p id="section-2-6.11.1"><code>MAX_LENGTH</code>: the maximum output length, which is 4294967295 as an integer.<a href="#section-2-6.11.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1362,14 +1368,14 @@ foreach output in outputs
     for i = 0 to output.Length - 1
         hash[i] = hash[i] ^ output[i]
 
-key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
+key = Hash(ZeroPad(hash, BLOCK_LEN) || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
 
 counter = 1
 reps = Ceiling(length / HASH_LEN)
 previous = List(1, 0)
 result = List(1, 0)
 for i = 0 to reps
-    previous = Hash(key || previous || LE64(counter++) || UTF8("balloon"))
+    previous = Hash(ZeroPad(key, BLOCK_LEN) || previous || LE64(counter++) || UTF8("balloon"))
     result = result || previous
 
 return result.Slice(0, length)

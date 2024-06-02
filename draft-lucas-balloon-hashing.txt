@@ -157,6 +157,9 @@ Table of Contents
    *  ReadLE64(a): the conversion of byte array a into an unsigned,
       little-endian 64-bit integer.
 
+   *  ZeroPad(a, n): byte array a padded with zeros until it is n bytes
+      long.
+
    *  Ceiling(x): the integer x rounded up to the nearest whole number.
 
    *  UTF8(s): the UTF-8 encoding of string s.
@@ -167,6 +170,8 @@ Table of Contents
       XOF, this is the minimum output length to obtain the maximum
       advertised security level.  For example, a 256-bit output for an
       XOF targeting 128-bit security.
+
+   *  BLOCK_LEN: the block size of the hash function in bytes.
 
    *  MAX_PASSWORD: the maximum password length, which is 4294967295
       bytes.
@@ -242,14 +247,14 @@ foreach output in outputs
     for i = 0 to output.Length - 1
         hash[i] = hash[i] ^ output[i]
 
-key = Hash(hash || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
+key = Hash(ZeroPad(hash, BLOCK_LEN) || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
 
 counter = 1
 reps = Ceiling(length / HASH_LEN)
 previous = List(1, 0)
 result = List(1, 0)
 for i = 0 to reps
-    previous = Hash(key || previous || LE64(counter++) || UTF8("balloon"))
+    previous = Hash(ZeroPad(key, BLOCK_LEN) || previous || LE64(counter++) || UTF8("balloon"))
     result = result || previous
 
 return result.Slice(0, length)
