@@ -1029,7 +1029,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lucas</td>
-<td class="center">Expires 3 December 2024</td>
+<td class="center">Expires 4 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1042,12 +1042,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lucas-balloon-hashing-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-06-01" class="published">1 June 2024</time>
+<time datetime="2024-06-02" class="published">2 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-12-03">3 December 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-04">4 December 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1092,7 +1092,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1125,10 +1125,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-expand-mix-extract-eme-" class="internal xref">The Expand-Mix-Extract (EME) Function</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-balloon-algorithm" class="internal xref">The Balloon Algorithm</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-balloon-algorithm" class="internal xref">The Balloon Algorithm</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-expand-mix-extract-eme-" class="internal xref">The Expand-Mix-Extract (EME) Function</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-implementation-consideratio" class="internal xref">Implementation Considerations</a></p>
@@ -1324,123 +1324,46 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </ul>
 </section>
 </div>
-<div id="the-expand-mix-extract-eme-function">
+<div id="the-balloon-algorithm">
 <section id="section-3">
-      <h2 id="name-the-expand-mix-extract-eme-">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-expand-mix-extract-eme-" class="section-name selfRef">The Expand-Mix-Extract (EME) Function</a>
+      <h2 id="name-the-balloon-algorithm">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-balloon-algorithm" class="section-name selfRef">The Balloon Algorithm</a>
       </h2>
 <div class="alignLeft art-text artwork" id="section-3-1">
 <pre>
-EME(password, salt, spaceCost, timeCost, parallelism, length)
+Balloon(password, salt, spaceCost, timeCost, parallelism, length)
 </pre><a href="#section-3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-3-2">The EME function can be divided into three steps:<a href="#section-3-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3-3">
-<li id="section-3-3.1">
-          <p id="section-3-3.1.1">Expand: a large buffer is filled with pseudorandom bytes derived by repeatedly hashing the password and salt. This buffer is divided into blocks the size of the hash function output length.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li id="section-3-3.2">
-          <p id="section-3-3.2.1">Mix: the buffer is mixed for the number of rounds specified by the user. Each block becomes equal to the hash of the previous block, the current block, and delta other blocks pseudorandomly chosen from the buffer based on the salt.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li id="section-3-3.3">
-          <p id="section-3-3.3.1">Extract: the last block of the buffer is output for key derivation.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
-</li>
-      </ol>
-<p id="section-3-4">Inputs:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-2">Balloon calls an internal function that provides memory hardness in a way that supports parallelism, which enables greater memory hardness without increasing the delay. The result of XORing the internal function outputs together is then used alongside user provided parameters for key derivation following the Extract-then-Expand paradigm.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Inputs:<a href="#section-3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-5.1">
-          <p id="section-3-5.1.1"><code>password</code>: the password to be hashed, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PASSWORD</code> bytes long.<a href="#section-3-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-4.1">
+          <p id="section-3-4.1.1"><code>password</code>: the password to be hashed, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PASSWORD</code> bytes long.<a href="#section-3-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.2">
-          <p id="section-3-5.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-3-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.2">
+          <p id="section-3-4.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-3-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.3">
-          <p id="section-3-5.3.1"><code>spaceCost</code>: the memory size in blocks, which <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code> that is a power of 2. A block is <code>HASH_LEN</code> bytes long.<a href="#section-3-5.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.3">
+          <p id="section-3-4.3.1"><code>spaceCost</code>: the memory size in blocks, which <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code> that is a power of 2. A block is <code>HASH_LEN</code> bytes long.<a href="#section-3-4.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.4">
-          <p id="section-3-5.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-5.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.4">
+          <p id="section-3-4.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-4.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.5">
-          <p id="section-3-5.5.1"><code>parallelism</code>: the number of CPU cores/EME calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-3-5.5.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.5">
+          <p id="section-3-4.5.1"><code>parallelism</code>: the number of CPU cores/internal function calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-3-4.5.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.6">
-          <p id="section-3-5.6.1"><code>length</code>: the length of the password hash/derived key in bytes, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_LENGTH</code>.<a href="#section-3-5.6.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-4.6">
+          <p id="section-3-4.6.1"><code>length</code>: the length of the password hash/derived key in bytes, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_LENGTH</code>.<a href="#section-3-4.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-6">Outputs:<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-5">Outputs:<a href="#section-3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-7.1">
-          <p id="section-3-7.1.1">The password hash, which is <code>HASH_LEN</code> bytes long.<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-6.1">
+          <p id="section-3-6.1.1">The password hash/derived key, which is <code>length</code> bytes long.<a href="#section-3-6.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-8">Steps:<a href="#section-3-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-9">
-<pre>
-buffer = List(spaceCost, HASH_LEN)
-counter = 0
-
-buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(password.Length) || LE64(salt.Length))
-for m = 1 to spaceCost - 1
-    buffer[m] = Hash(LE64(counter++) || buffer[m - 1])
-
-for t = 0 to timeCost - 1
-    for m = 0 to spaceCost - 1
-        if m == 0
-            previous = buffer[spaceCost - 1]
-        else
-            previous = buffer[m - 1]
-
-        pseudorandom = Hash(LE64(counter++) || salt)
-        other1 = ReadLE64(pseudorandom.Slice(0, 8)) % spaceCost
-        other2 = ReadLE64(pseudorandom.Slice(8, 8)) % spaceCost
-        other3 = ReadLE64(pseudorandom.Slice(16, 8)) % spaceCost
-        buffer[m] = Hash(LE64(counter++) || previous || buffer[m] || buffer[other1] || buffer[other2] || buffer[other3])
-
-return buffer[spaceCost - 1]
-</pre><a href="#section-3-9" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="the-balloon-algorithm">
-<section id="section-4">
-      <h2 id="name-the-balloon-algorithm">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-balloon-algorithm" class="section-name selfRef">The Balloon Algorithm</a>
-      </h2>
-<div class="alignLeft art-text artwork" id="section-4-1">
-<pre>
-Balloon(password, salt, spaceCost, timeCost, parallelism, length)
-</pre><a href="#section-4-1" class="pilcrow">¶</a>
-</div>
-<p id="section-4-2">A limitation of EME is that it lacks parallelism because the value of each block depends on the value of the previous block. Balloon addresses this by invoking EME in parallel using multiple cores, XORing the outputs, and hashing the password, salt, output length, and XORed output to derive key material. This provides greater memory hardness without increasing the delay.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">Inputs:<a href="#section-4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4-4.1">
-          <p id="section-4-4.1.1"><code>password</code>: the password to be hashed, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PASSWORD</code> bytes long.<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-4.2">
-          <p id="section-4-4.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-4.3">
-          <p id="section-4-4.3.1"><code>spaceCost</code>: the memory size in blocks, which <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code> that is a power of 2. A block is <code>HASH_LEN</code> bytes long.<a href="#section-4-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-4.4">
-          <p id="section-4-4.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-4-4.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-4.5">
-          <p id="section-4-4.5.1"><code>parallelism</code>: the number of CPU cores/EME calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-4-4.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-4.6">
-          <p id="section-4-4.6.1"><code>length</code>: the length of the password hash/derived key in bytes, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_LENGTH</code>.<a href="#section-4-4.6.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
-<p id="section-4-5">Outputs:<a href="#section-4-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4-6.1">
-          <p id="section-4-6.1.1">The password hash/derived key, which is <code>length</code> bytes long.<a href="#section-4-6.1.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
-<p id="section-4-7">Steps:<a href="#section-4-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4-8">
+<p id="section-3-7">Steps:<a href="#section-3-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-8">
 <pre>
 outputs = List(parallelism, HASH_LEN)
 
@@ -1464,7 +1387,84 @@ for i = 0 to reps
     result = result || previous
 
 return result.Slice(0, length)
-</pre><a href="#section-4-8" class="pilcrow">¶</a>
+</pre><a href="#section-3-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-expand-mix-extract-eme-function">
+<section id="section-4">
+      <h2 id="name-the-expand-mix-extract-eme-">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-expand-mix-extract-eme-" class="section-name selfRef">The Expand-Mix-Extract (EME) Function</a>
+      </h2>
+<div class="alignLeft art-text artwork" id="section-4-1">
+<pre>
+EME(password, salt, spaceCost, timeCost, parallelism, length)
+</pre><a href="#section-4-1" class="pilcrow">¶</a>
+</div>
+<p id="section-4-2">The EME function is the internal function used by Balloon for memory hardness. It can be divided into three steps:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4-3">
+<li id="section-4-3.1">
+          <p id="section-4-3.1.1">Expand: a large buffer is filled with pseudorandom bytes derived by repeatedly hashing the user provided parameters. This buffer is divided into blocks the size of the hash function output length.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-4-3.2">
+          <p id="section-4-3.2.1">Mix: the buffer is mixed for the number of rounds specified by the user. Each block becomes equal to the hash of the previous block, the current block, and delta other blocks pseudorandomly chosen from the buffer based on the salt.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-4-3.3">
+          <p id="section-4-3.3.1">Extract: the last block of the buffer is output for key derivation.<a href="#section-4-3.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+<p id="section-4-4">Inputs:<a href="#section-4-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-5.1">
+          <p id="section-4-5.1.1"><code>password</code>: the password provided to the Balloon algorithm.<a href="#section-4-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-5.2">
+          <p id="section-4-5.2.1"><code>salt</code>: the salt provided to the Balloon algorithm.<a href="#section-4-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-5.3">
+          <p id="section-4-5.3.1"><code>spaceCost</code>: the space cost provided to the Balloon algorithm.<a href="#section-4-5.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-5.4">
+          <p id="section-4-5.4.1"><code>timeCost</code>: the time cost provided to the Balloon algorithm.<a href="#section-4-5.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-5.5">
+          <p id="section-4-5.5.1"><code>parallelism</code>: the parallelism provided to the Balloon algorithm.<a href="#section-4-5.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-5.6">
+          <p id="section-4-5.6.1"><code>length</code>: the length provided to the Balloon algorithm.<a href="#section-4-5.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-4-6">Outputs:<a href="#section-4-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-7.1">
+          <p id="section-4-7.1.1">The last block of the buffer, which is <code>HASH_LEN</code> bytes long.<a href="#section-4-7.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-4-8">Steps:<a href="#section-4-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4-9">
+<pre>
+buffer = List(spaceCost, HASH_LEN)
+counter = 0
+
+buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(password.Length) || LE64(salt.Length))
+for m = 1 to spaceCost - 1
+    buffer[m] = Hash(LE64(counter++) || buffer[m - 1])
+
+for t = 0 to timeCost - 1
+    for m = 0 to spaceCost - 1
+        if m == 0
+            previous = buffer[spaceCost - 1]
+        else
+            previous = buffer[m - 1]
+
+        pseudorandom = Hash(LE64(counter++) || salt)
+        other1 = ReadLE64(pseudorandom.Slice(0, 8)) % spaceCost
+        other2 = ReadLE64(pseudorandom.Slice(8, 8)) % spaceCost
+        other3 = ReadLE64(pseudorandom.Slice(16, 8)) % spaceCost
+        buffer[m] = Hash(LE64(counter++) || previous || buffer[m] || buffer[other1] || buffer[other2] || buffer[other3])
+
+return buffer[spaceCost - 1]
+</pre><a href="#section-4-9" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
