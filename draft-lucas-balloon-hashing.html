@@ -1360,8 +1360,7 @@ Balloon(password, salt, spaceCost, timeCost, parallelism, length)
 outputs = List(parallelism, HASH_LEN)
 
 parallel for i = 0 to parallelism - 1
-    newSalt = salt || LE64(i + 1)
-    outputs[i] = BalloonCore(password, newSalt, spaceCost, timeCost)
+    outputs[i] = BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, i + 1)
 
 hash = List(1, HASH_LEN)
 foreach output in outputs
@@ -1390,7 +1389,7 @@ return result.Slice(0, length)
       </h2>
 <div class="alignLeft art-text artwork" id="section-4-1">
 <pre>
-BalloonCore(password, salt, spaceCost, timeCost, parallelism, length)
+BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, iteration)
 </pre><a href="#section-4-1" class="pilcrow">¶</a>
 </div>
 <p id="section-4-2">The BalloonCore function is the internal function used by Balloon for memory hardness. It can be divided into three steps:<a href="#section-4-2" class="pilcrow">¶</a></p>
@@ -1425,6 +1424,9 @@ BalloonCore(password, salt, spaceCost, timeCost, parallelism, length)
         <li class="normal" id="section-4-5.6">
           <p id="section-4-5.6.1"><code>length</code>: the length provided to the Balloon algorithm.<a href="#section-4-5.6.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="section-4-5.7">
+          <p id="section-4-5.7.1"><code>iteration</code>: the parallelism loop iteration from the Balloon algorithm.<a href="#section-4-5.7.1" class="pilcrow">¶</a></p>
+</li>
       </ul>
 <p id="section-4-6">Outputs:<a href="#section-4-6" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1438,7 +1440,7 @@ BalloonCore(password, salt, spaceCost, timeCost, parallelism, length)
 buffer = List(spaceCost, HASH_LEN)
 counter = 0
 
-buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(password.Length) || LE64(salt.Length))
+buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(iteration) || LE64(password.Length) || LE64(salt.Length))
 for m = 1 to spaceCost - 1
     buffer[m] = Hash(LE64(counter++) || buffer[m - 1])
 
