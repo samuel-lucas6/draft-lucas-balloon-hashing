@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               2 June 2024
-Expires: 4 December 2024
+Intended status: Informational                               8 June 2024
+Expires: 10 December 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 December 2024.
+   This Internet-Draft will expire on 10 December 2024.
 
 Copyright Notice
 
@@ -336,6 +336,9 @@ return buffer[spaceCost - 1]
       buffer or use a byte array counter.
 
    *  Skip the XORing of outputs when parallelism = 1.
+
+   *  Create a single buffer full of zeros for the key derivation
+      padding rather than padding the two variables separately.
 
    *  Convert the key derivation domain separation string to bytes once
       rather than in each iteration of the loop.
