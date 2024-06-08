@@ -1551,7 +1551,7 @@ $balloon-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
 </div>
 <ul class="normal">
 <li class="normal" id="section-8-3.1">
-          <p id="section-8-3.1.1"><code>balloon-hash</code>: where <code>hash</code> is the proper, correctly punctuated name of the hash function in lowercase. For example, <code>sha-256</code>, not <code>sha256</code>. Another example is <code>sha3-256</code>, not <code>sha3256</code> or <code>sha-3-256</code>. Finally, <code>sha-512-256</code> for SHA-512 truncated to 256 bits, and <code>sha-512/256</code> for the SHA-512/256 algorithm.<a href="#section-8-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-8-3.1.1"><code>balloon-hash</code>: where <code>hash</code> is the official hash function/XOF OID minus any prefix (e.g. <code>id-</code>). For example, <code>blake2b512</code> for BLAKE2b-512 <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>.<a href="#section-8-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.2">
           <p id="section-8-3.2.1"><code>v=version</code>: this is version 2 of Balloon. If the design is modified, the version will be incremented.<a href="#section-8-3.2.1" class="pilcrow">¶</a></p>
