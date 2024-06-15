@@ -14,17 +14,17 @@
 <meta content="draft-lucas-balloon-hashing-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.21.0
-    Python 3.11.9
+    Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 4.2.1
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
-    setuptools 68.2.2
+    setuptools 69.5.1
     six 1.16.0
     wcwidth 0.2.13
 -->
@@ -1029,7 +1029,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lucas</td>
-<td class="center">Expires 10 December 2024</td>
+<td class="center">Expires 17 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1042,12 +1042,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lucas-balloon-hashing-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-06-08" class="published">8 June 2024</time>
+<time datetime="2024-06-15" class="published">15 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-12-10">10 December 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-17">17 December 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1092,7 +1092,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1597,7 +1597,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 <p id="section-9.1-5">Avoid using hardcoded <code>spaceCost</code>/<code>timeCost</code>/<code>parallelism</code> parameters when performing password hashing; these <span class="bcp14">SHOULD</span> be stored as part of the password hash, as described in <a href="#encoding-password-hashes" class="auto internal xref">Section 8</a>. With key derivation, hardcoded parameters are acceptable if protocol versioning is used.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
 <p id="section-9.1-6">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to encrypt password hashes using an authenticated encryption with associated data (AEAD) scheme <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>]</span> before storage. This forces an attacker to compromise the key, which is stored separately from the database, as well as the database before they can begin password cracking. If the key is compromised but the database is not, it can be rotated without having to reset any passwords.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
 <p id="section-9.1-7">For key derivation, one can use a pepper (e.g. a key file) with a keyed hash function, like HMAC <span>[<a href="#RFC2104" class="cite xref">RFC2104</a>]</span>, on the password prior to calling Balloon for additional security. It is <span class="bcp14">RECOMMENDED</span> to use a 256-bit pepper.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
-<p id="section-9.1-8">If performing key derivation for password-based encryption with a non-committing AEAD scheme, be aware of partitioning oracle attacks, which can significantly speed up password guessing <span>[<a href="#LGR21" class="cite xref">LGR21</a>]</span>. These are relevant when a server that knows the key (an oracle) performs password-based decryption for ciphertexts you send and leaks whether decryption was successful (e.g. via an error message or timing side-channel).<a href="#section-9.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-guarantees">
@@ -1680,10 +1679,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 <dt id="BCS16">[BCS16]</dt>
         <dd>
 <span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Corrigan-Gibbs, H.</span>, and <span class="refAuthor">S. Schechter</span>, <span class="refTitle">"Balloon Hashing: A Memory-Hard Function Providing Provable Protection Against Sequential Attacks"</span>, <span class="refContent">Cryptology ePrint Archive, Paper 2016/027</span>, <time datetime="2016" class="refDate">2016</time>, <span>&lt;<a href="https://eprint.iacr.org/2016/027">https://eprint.iacr.org/2016/027</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="LGR21">[LGR21]</dt>
-        <dd>
-<span class="refAuthor">Len, J.</span>, <span class="refAuthor">Grubbs, P.</span>, and <span class="refAuthor">T. Ristenpart</span>, <span class="refTitle">"Partitioning Oracle Attacks"</span>, <span class="refContent">30th USENIX Security Symposium (USENIX Security 21), pp. 195–212</span>, <time datetime="2021" class="refDate">2021</time>, <span>&lt;<a href="https://www.usenix.org/conference/usenixsecurity21/presentation/len">https://www.usenix.org/conference/usenixsecurity21/presentation/len</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="PM99">[PM99]</dt>
         <dd>

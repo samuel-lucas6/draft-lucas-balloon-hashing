@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                               8 June 2024
-Expires: 10 December 2024
+Intended status: Informational                              15 June 2024
+Expires: 17 December 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 December 2024.
+   This Internet-Draft will expire on 17 December 2024.
 
 Copyright Notice
 
@@ -491,14 +491,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
    calling Balloon for additional security.  It is RECOMMENDED to use a
    256-bit pepper.
 
-   If performing key derivation for password-based encryption with a
-   non-committing AEAD scheme, be aware of partitioning oracle attacks,
-   which can significantly speed up password guessing [LGR21].  These
-   are relevant when a server that knows the key (an oracle) performs
-   password-based decryption for ciphertexts you send and leaks whether
-   decryption was successful (e.g. via an error message or timing side-
-   channel).
-
 9.2.  Security Guarantees
 
    The security properties of Balloon depend on the chosen collision-
@@ -599,12 +591,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               Protection Against Sequential Attacks", Cryptology ePrint
               Archive, Paper 2016/027, 2016,
               <https://eprint.iacr.org/2016/027>.
-
-   [LGR21]    Len, J., Grubbs, P., and T. Ristenpart, "Partitioning
-              Oracle Attacks", 30th USENIX Security Symposium (USENIX
-              Security 21), pp. 195–212, 2021,
-              <https://www.usenix.org/conference/usenixsecurity21/
-              presentation/len>.
 
    [PM99]     Provos, N. and D. Mazières, "A Future-Adaptable Password
               Scheme", Proceedings of the 1999 USENIX Annual Technical
