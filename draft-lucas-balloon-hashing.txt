@@ -415,6 +415,10 @@ return buffer[spaceCost - 1]
    in your protocol/application.  See Section 9 for guidance on
    generating the salt.
 
+   For password hashing, it is RECOMMENDED to use a length of 256 bits.
+   For key derivation, it is RECOMMENDED to use a length of at least 128
+   bits.
+
 8.  Encoding Password Hashes
 
    To store Balloon hashes in a database as strings, the following
