@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-18T01:19:45.370615+00:00",
+  "timestamp": "2024-06-20T01:18:01.660975+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -78,9 +78,17 @@
       "labels": [],
       "body": "[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [TobTu](https://tobtu.com/), the [Argon2 RFC](https://www.rfc-editor.org/rfc/rfc9106.html), etc provide recommended parameters. It would be good to do the same assuming they are realistic, but there's no guidance on parameters from the authors of Balloon. Furthermore, Balloon hasn't been benchmarked properly with different hash functions and parameters to determine suitable recommendations.",
       "createdAt": "2024-01-01T09:54:00Z",
-      "updatedAt": "2024-01-01T09:54:00Z",
+      "updatedAt": "2024-06-19T01:20:30Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "Sc00bz",
+          "authorAssociation": "NONE",
+          "body": "The best way to do this is count the amount of hash block calculations and compare to PBKDF2 because a GPU attacker will be limited by compute instead of bandwidth. Balloon needs to use >1 MiB to start slowing down GPUs. >3 MiB will have a near linear slowdown.\r\n\r\nI'm going to use \"H/block\" to mean \"hash block calculations per block of memory\". This is how many hash blocks are calculated to output a hash. Depending on implementation and settings (I'll use \"delta\" or \"neighbors\" = 3). This is usually 3-17 H/block. Some bad implementations depend on salt length and worse depend on secret data and its length. Defender costs are [paper](https://eprint.iacr.org/2016/027.pdf) (14 H/block), [academic code](https://github.com/henrycg/balloon/blob/master/libballoon/hash_state.c#L145-L178) (3 H/block + 0.5 AES/block), [Rust's](https://github.com/RustCrypto/password-hashes/blob/master/balloon-hash/src/balloon.rs#L143-L201) (14-17+ H/block (depends on salt and secret data lengths)), [Python](https://github.com/nachonavarro/balloon-hashing/blob/master/balloon.py#L61-L94) (14-17+ H/block (depends on salt length)). Attacker costs are paper (8 H/block), academic code (3 H/block), Rust's (8 H/block), Python (8 H/block).\r\n\r\nRough settings for <10 KH/s/GPU (GPU being an RTX 4080 Super or \"2/3 of an RTX 4090\" which should be within a few percent of each other):\r\nBalloon-SHA-256:\r\nAcademic code: `m=256 KiB, t=48`; `m=512 KiB, t=24`; `m=1 MiB, t=12`; `m=2 MiB, t=3-6?`\r\nPaper/Rust's/Python: `m=256 KiB, t=18`; `m=512 KiB, t=9`; `m=1 MiB, t=5`; `m=2 MiB, t=2-3?`\r\n\r\nBalloon-SHA-512:\r\nAcademic code: `m=256 KiB, t=34`; `m=512 KiB, t=17`; `m=1 MiB, t=9`; `m=2 MiB, t=2-4?`\r\nPaper/Rust's/Python: `m=256 KiB, t=13`; `m=512 KiB, t=7`; `m=1 MiB, t=4`; `m=2 MiB, t=1-2?`\r\n\r\nI looked into what the best output size of SHAKE128 for max speed: 248, 520, 792, 1056, and 1328 are 1, 2, 3, 4, and 5 H/block. Best is SHAKE128 with 1328 bits of output but it's not a multiple of a cache line so 512 (2 H/block) or 1024 (4 H/block) would be better. But this puts it at about even with SHA-512 for the attacker. Now the only question is which is faster for the defender. SHAKE128-1024 might be faster even if it's slower than SHA-512 because of the larger block size. Also if the same hash function is used for the deterministic random lookups then SHAKE128-1024 will have an advantage when grabbing 64 bit at a time vs big int math. Note the \"academic code\" is SHA-256 for the hash and AES-128 for the deterministic random lookups. I just remembered that SHAKE128 has an internal parallelism of 5. Which means the slowdown for an attacker doesn't start until >5 MiB but to utilize that there's a performance hit. Yeah... I'll need to implement it to see where it lands. Not that I'm going to do that any time soon.",
+          "createdAt": "2024-06-19T01:20:29Z",
+          "updatedAt": "2024-06-19T01:20:29Z"
+        }
+      ]
     },
     {
       "number": 3,
@@ -174,9 +182,17 @@
       "labels": [],
       "body": "A secret key could be supported like in [Argon2](https://www.rfc-editor.org/rfc/rfc9106.html#section-3.1). However, I'm not convinced this is a good idea because encrypting password hashes is [preferable](https://github.com/paragonie/password_lock?tab=readme-ov-file#how-is-this-different-than-peppering), as explained in the Security Considerations section. Supporting this would suggest otherwise, even though it could be useful for key derivation.",
       "createdAt": "2024-01-01T10:25:30Z",
-      "updatedAt": "2024-01-01T10:25:30Z",
+      "updatedAt": "2024-06-19T01:38:18Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "Sc00bz",
+          "authorAssociation": "NONE",
+          "body": "I agree. But you might want to have \"extra salts\". This is useful for PAKEs where you include the user ID, server ID, OPRF salt (or salt), and local/secret salt (if there is one). This is just to avoid collisions for `H(salt || userId || serverId)` like `H(salt || \"user1\" || \"server\")` and `H(salt || \"user\" || \"1server\")` etc. It doesn't matter how you do it but the simplest is `salt' = H(H(salt) || H(userId) || H(serverId) || ... )`.",
+          "createdAt": "2024-06-19T01:38:16Z",
+          "updatedAt": "2024-06-19T01:38:16Z"
+        }
+      ]
     },
     {
       "number": 8,
