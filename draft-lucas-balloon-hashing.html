@@ -1472,16 +1472,22 @@ return previous
           <p id="section-5-2.2.1">Instead of an integer counter that gets repeatedly converted to a byte array, allocate a byte array once and repeatedly fill that buffer or use a byte array counter.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-2.3">
-          <p id="section-5-2.3.1">Skip the XORing of outputs when <code>parallelism = 1</code>.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.3.1">Instead of <code>x % spaceCost</code>, one can do <code>x &amp; (spaceCost - 1)</code> because <code>spaceCost</code> is a power of 2.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-2.4">
-          <p id="section-5-2.4.1">Create a single buffer full of zeros for the key derivation padding rather than padding the two variables separately.<a href="#section-5-2.4.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.4.1">Skip the XORing of outputs when <code>parallelism = 1</code>.<a href="#section-5-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-2.5">
-          <p id="section-5-2.5.1">Convert the key derivation domain separation string to bytes once rather than in each iteration of the loop.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.5.1">Create a single buffer full of zeros for the key derivation padding rather than padding the two variables separately.<a href="#section-5-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-5-2.6">
-          <p id="section-5-2.6.1">Use an incremental hash function API rather than manual concatenation.<a href="#section-5-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.6.1">Instead of <code>Ceiling(length / HASH_LEN)</code>, one can do <code>(length + HASH_LEN - 1) / HASH_LEN</code>.<a href="#section-5-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.7">
+          <p id="section-5-2.7.1">Convert the key derivation domain separation string to bytes once rather than in each iteration of the loop.<a href="#section-5-2.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.8">
+          <p id="section-5-2.8.1">Use an incremental hash function API rather than manual concatenation.<a href="#section-5-2.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
