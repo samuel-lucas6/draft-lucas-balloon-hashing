@@ -480,6 +480,13 @@ $balloon-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSi
    avoid denial-of-service and user frustration whilst ensuring adequate
    protection against password cracking.
 
+   If you want to derive multiple keys (e.g. for encryption and
+   authentication), you MUST only run the algorithm once and use
+   different portions of the output as separate keys.  Otherwise, the
+   attacker may have an advantage, like only needing to run the
+   algorithm once instead of twice to check a password, and you will be
+   forced to use weaker parameters.
+
    Avoid using hardcoded spaceCost/timeCost/parallelism parameters when
    performing password hashing; these SHOULD be stored as part of the
    password hash, as described in Section 8.  With key derivation,
