@@ -1443,20 +1443,17 @@ for m = 1 to spaceCost - 1
     buffer[m] = PRF(key, LE64(counter++) || buffer[m - 1])
 
 emptyKey = List(1, 0)
+previous = buffer[spaceCost - 1]
 for t = 0 to timeCost - 1
     for m = 0 to spaceCost - 1
-        if m == 0
-            previous = buffer[spaceCost - 1]
-        else
-            previous = buffer[m - 1]
-
         pseudorandom = PRF(ZeroPad(emptyKey, HASH_LEN), LE64(counter++) || salt)
         other1 = ReadLE64(pseudorandom.Slice(0, 8)) % spaceCost
         other2 = ReadLE64(pseudorandom.Slice(8, 8)) % spaceCost
         other3 = ReadLE64(pseudorandom.Slice(16, 8)) % spaceCost
         buffer[m] = PRF(key, LE64(counter++) || previous || buffer[m] || buffer[other1] || buffer[other2] || buffer[other3])
+        previous = buffer[m]
 
-return buffer[spaceCost - 1]
+return previous
 </pre><a href="#section-4-9" class="pilcrow">¶</a>
 </div>
 </section>
