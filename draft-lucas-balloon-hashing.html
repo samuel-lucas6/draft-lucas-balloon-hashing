@@ -1535,7 +1535,7 @@ return buffer[spaceCost - 1]
       </ol>
 <p id="section-7-4">Regrettably, Balloon has not yet been sufficiently investigated for generic parameter recommendations to be made. This is also difficult given how various cryptographic hash functions can be used.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128- or 256-bit <code>salt</code>. Other <code>salt</code> lengths <span class="bcp14">SHOULD NOT</span> be used, and the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of 256 bits. For key derivation, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of at least 128 bits.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-6">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of 128 or 256 bits. For key derivation, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of at least 128 bits.<a href="#section-7-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="encoding-password-hashes">
