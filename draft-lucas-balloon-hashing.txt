@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                              15 June 2024
-Expires: 17 December 2024
+Intended status: Informational                              22 June 2024
+Expires: 24 December 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 December 2024.
+   This Internet-Draft will expire on 24 December 2024.
 
 Copyright Notice
 
@@ -151,7 +151,11 @@ Table of Contents
    *  List(i, l): the creation of a new list containing i byte arrays,
       each with length l.
 
-   *  Hash(a): collision-resistant hashing of the byte array a.
+   *  PRF(k, m): the output of a collision-resistant PRF (e.g.  HMAC
+      [RFC2104]) with key k and message m, both byte arrays.  To use a
+      collision-resistant hash/XOF with no key parameter (e.g.  SHA-512
+      [RFC6234]), you MUST perform prefix MAC and pad the key with zeros
+      to the block size.
 
    *  LE64(x): the little-endian encoding of unsigned 64-bit integer x.
 
@@ -171,8 +175,6 @@ Table of Contents
       XOF, this is the minimum output length to obtain the maximum
       advertised security level.  For example, a 256-bit output for an
       XOF targeting 128-bit security.
-
-   *  BLOCK_LEN: the block size of the hash function in bytes.
 
    *  MAX_PASSWORD: the maximum password length, which is 4294967295
       bytes.
@@ -239,29 +241,30 @@ Table of Contents
 
 outputs = List(parallelism, HASH_LEN)
 
+key = List(1, 0)
+key = PRF(ZeroPad(key, HASH_LEN), password || salt || LE64(password.Length) || LE64(salt.Length))
+
 parallel for i = 0 to parallelism - 1
-    outputs[i] = BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, i + 1)
+    outputs[i] = BalloonCore(key, salt, spaceCost, timeCost, parallelism, length, i + 1)
 
 hash = List(1, HASH_LEN)
 foreach output in outputs
     for i = 0 to output.Length - 1
         hash[i] = hash[i] ^ output[i]
 
-key = Hash(ZeroPad(hash, BLOCK_LEN) || password || salt || LE64(length) || LE64(password.Length) || LE64(salt.Length))
-
 counter = 1
 reps = Ceiling(length / HASH_LEN)
 previous = List(1, 0)
 result = List(1, 0)
 for i = 0 to reps
-    previous = Hash(ZeroPad(key, BLOCK_LEN) || previous || LE64(counter++) || UTF8("balloon"))
+    previous = PRF(key, previous || LE64(counter++) || UTF8("balloon") || hash)
     result = result || previous
 
 return result.Slice(0, length)
 
 4.  The BalloonCore Function
 
-BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, iteration)
+BalloonCore(key, salt, spaceCost, timeCost, parallelism, length, iteration)
 
    The BalloonCore function is the internal function used by Balloon for
    memory hardness.  It can be divided into three steps:
@@ -281,7 +284,7 @@ BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, iteration)
 
    Inputs:
 
-   *  password: the password provided to the Balloon algorithm.
+   *  key: the key from the Balloon algorithm.
 
    *  salt: the salt provided to the Balloon algorithm.
 
@@ -305,10 +308,11 @@ BalloonCore(password, salt, spaceCost, timeCost, parallelism, length, iteration)
 buffer = List(spaceCost, HASH_LEN)
 counter = 0
 
-buffer[0] = Hash(LE64(counter++) || password || salt || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(iteration) || LE64(password.Length) || LE64(salt.Length))
+buffer[0] = PRF(key, LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(iteration))
 for m = 1 to spaceCost - 1
-    buffer[m] = Hash(LE64(counter++) || buffer[m - 1])
+    buffer[m] = PRF(key, LE64(counter++) || buffer[m - 1])
 
+emptyKey = List(1, 0)
 for t = 0 to timeCost - 1
     for m = 0 to spaceCost - 1
         if m == 0
@@ -316,11 +320,11 @@ for t = 0 to timeCost - 1
         else
             previous = buffer[m - 1]
 
-        pseudorandom = Hash(LE64(counter++) || salt)
+        pseudorandom = PRF(ZeroPad(emptyKey, HASH_LEN), LE64(counter++) || salt)
         other1 = ReadLE64(pseudorandom.Slice(0, 8)) % spaceCost
         other2 = ReadLE64(pseudorandom.Slice(8, 8)) % spaceCost
         other3 = ReadLE64(pseudorandom.Slice(16, 8)) % spaceCost
-        buffer[m] = Hash(LE64(counter++) || previous || buffer[m] || buffer[other1] || buffer[other2] || buffer[other3])
+        buffer[m] = PRF(key, LE64(counter++) || previous || buffer[m] || buffer[other1] || buffer[other2] || buffer[other3])
 
 return buffer[spaceCost - 1]
 
@@ -547,6 +551,11 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               Extendable-Output Functions", 2015,
               <https://doi.org/10.6028/NIST.FIPS.202>.
 
+   [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
+              Hashing for Message Authentication", RFC 2104,
+              DOI 10.17487/RFC2104, February 1997,
+              <https://www.rfc-editor.org/rfc/rfc2104>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -610,11 +619,6 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
               Resistance", Theory of Cryptography. TCC 2017. Lecture
               Notes in Computer Science(), vol 10677, pp. 466–492, 2017,
               <https://doi.org/10.1007/978-3-319-70500-2_16>.
-
-   [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
-              Hashing for Message Authentication", RFC 2104,
-              DOI 10.17487/RFC2104, February 1997,
-              <https://www.rfc-editor.org/rfc/rfc2104>.
 
    [RFC5116]  McGrew, D., "An Interface and Algorithms for Authenticated
               Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
