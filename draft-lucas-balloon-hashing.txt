@@ -153,9 +153,9 @@ Table of Contents
 
    *  PRF(k, m): the output of a collision-resistant PRF (e.g.  HMAC
       [RFC2104]) with key k and message m, both byte arrays.  To use a
-      collision-resistant hash/XOF with no key parameter (e.g.  SHA-512
-      [RFC6234]), you MUST perform prefix MAC and pad the key with zeros
-      to the block size.
+      collision-resistant hash function with no key parameter (e.g.
+      SHA-512 [RFC6234]), you MUST perform prefix MAC and pad the key
+      with zeros to the block size.
 
    *  LE64(x): the little-endian encoding of unsigned 64-bit integer x.
 
@@ -354,20 +354,20 @@ return buffer[spaceCost - 1]
 
 6.  Choosing the Hash Function
 
-   The choice of cryptographic hash function/XOF affects the performance
-   and security of Balloon in two ways:
+   The choice of cryptographic hash function affects the performance and
+   security of Balloon in two ways:
 
    1.  For the same parameters, the attacker has an advantage if the
        algorithm is faster in hardware versus software.  They will be
        able to do the computation in less time than the defender.
 
    2.  For the same delay, the defender will be forced to use smaller
-       parameters with a slower cryptographic hash function/XOF in
-       software.  Using a faster algorithm in software means stronger
-       parameters can be used.
+       parameters with a slower cryptographic hash function in software.
+       Using a faster algorithm in software means stronger parameters
+       can be used.
 
-   It is RECOMMENDED to use a cryptographic hash function/XOF that is
-   fast in software but relatively slow in hardware, such as BLAKE2b
+   It is RECOMMENDED to use a cryptographic hash function that is fast
+   in software but relatively slow in hardware, such as BLAKE2b
    [RFC7693].  As another example, SHA-512 is preferable to SHA-256
    [RFC6234].  Finally, SHA-3 [FIPS202] is NOT RECOMMENDED as it is
    slower in software compared to in hardware.
@@ -431,9 +431,9 @@ return buffer[spaceCost - 1]
 
   $balloon-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
 
-   *  balloon-hash: where hash is the official hash function/XOF OID
-      minus any prefix (e.g. id-).  For example, blake2b512 for
-      BLAKE2b-512 [RFC7693].
+   *  balloon-hash: where hash is the official hash function OID minus
+      any prefix (e.g. id-).  For example, blake2b512 for BLAKE2b-512
+      [RFC7693].
 
    *  v=version: this is version 2 of Balloon.  If the design is
       modified, the version will be incremented.
@@ -503,7 +503,7 @@ $balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snS
 9.2.  Security Guarantees
 
    The security properties of Balloon depend on the chosen collision-
-   resistant hash function/XOF.  For example, a 256-bit hash typically
+   resistant hash function.  For example, a 256-bit hash typically
    provides 128-bit collision resistance and 256-bit (second) preimage
    resistance.
 
