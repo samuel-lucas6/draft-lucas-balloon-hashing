@@ -452,7 +452,7 @@ return buffer[spaceCost - 1]
 
    Here is an example encoded hash:
 
-$balloon-sha-256$v=1$m=1024,t=3,p=0$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
+$balloon-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
 
 9.  Security Considerations
 
