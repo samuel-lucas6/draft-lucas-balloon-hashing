@@ -7,7 +7,7 @@
 <title>Balloon Hashing</title>
 <meta content="Samuel Lucas" name="author">
 <meta content="
-       This document describes Balloon, a memory-hard function suitable for password hashing and password-based key derivation. It has proven memory-hardness properties, is built from any standard cryptographic hash function or extendable-output function (XOF), is resistant to cache-timing attacks, and is easy to implement whilst remaining performant. 
+       This document describes Balloon, a memory-hard function suitable for password hashing and password-based key derivation. It has proven memory-hardness properties, is resistant to cache-timing attacks, is easy to implement, and is built from any collision-resistant pseudorandom function (PRF), hash function, or extendable-output function (XOF). 
     " name="description">
 <meta content="xml2rfc 3.21.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1060,7 +1060,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Balloon Hashing</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes Balloon, a memory-hard function suitable for password hashing and password-based key derivation. It has proven memory-hardness properties, is built from any standard cryptographic hash function or extendable-output function (XOF), is resistant to cache-timing attacks, and is easy to implement whilst remaining performant.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes Balloon, a memory-hard function suitable for password hashing and password-based key derivation. It has proven memory-hardness properties, is resistant to cache-timing attacks, is easy to implement, and is built from any collision-resistant pseudorandom function (PRF), hash function, or extendable-output function (XOF).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1210,13 +1210,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <p id="section-1-2.1.1">It has proven memory-hardness properties, making it resistant against sequential GPU/ASIC attacks. An adversary trying to save space pays a large penalty in computation time.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-2.2">
-          <p id="section-1-2.2.1">It can be instantiated with any cryptographic hash function or XOF, making it a mode of operation for these existing algorithms. No new, unstudied primitives are required.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-2.2.1">It can be instantiated with any collision-resistant PRF, hash function, or XOF, making it a mode of operation for these existing algorithms. No new, unstudied primitives are required.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-2.3">
           <p id="section-1-2.3.1">It uses a password-independent memory access pattern, making it resistant to cache-timing attacks. This property is especially relevant in cloud computing environments where multiple users can share the same physical machine.<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-2.4">
-          <p id="section-1-2.4.1">It is easy to implement whilst being fast enough for real-world use.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+          <p id="section-1-2.4.1">It is intuitive to understand and easy to implement, which reduces the risk of implementation mistakes.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-1-3">Unfortunately, the paper did not fully specify the algorithm nor provide guidance on parameters. Furthermore, the algorithm was not designed with key derivation in mind and had multiple variants.<a href="#section-1-3" class="pilcrow">¶</a></p>
