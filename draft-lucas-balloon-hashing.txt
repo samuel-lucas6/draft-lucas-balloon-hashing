@@ -15,10 +15,10 @@ Abstract
 
    This document describes Balloon, a memory-hard function suitable for
    password hashing and password-based key derivation.  It has proven
-   memory-hardness properties, is built from any standard cryptographic
-   hash function or extendable-output function (XOF), is resistant to
-   cache-timing attacks, and is easy to implement whilst remaining
-   performant.
+   memory-hardness properties, is resistant to cache-timing attacks, is
+   easy to implement, and is built from any collision-resistant
+   pseudorandom function (PRF), hash function, or extendable-output
+   function (XOF).
 
 About This Document
 
@@ -97,17 +97,17 @@ Table of Contents
       against sequential GPU/ASIC attacks.  An adversary trying to save
       space pays a large penalty in computation time.
 
-   *  It can be instantiated with any cryptographic hash function or
-      XOF, making it a mode of operation for these existing algorithms.
-      No new, unstudied primitives are required.
+   *  It can be instantiated with any collision-resistant PRF, hash
+      function, or XOF, making it a mode of operation for these existing
+      algorithms.  No new, unstudied primitives are required.
 
    *  It uses a password-independent memory access pattern, making it
       resistant to cache-timing attacks.  This property is especially
       relevant in cloud computing environments where multiple users can
       share the same physical machine.
 
-   *  It is easy to implement whilst being fast enough for real-world
-      use.
+   *  It is intuitive to understand and easy to implement, which reduces
+      the risk of implementation mistakes.
 
    Unfortunately, the paper did not fully specify the algorithm nor
    provide guidance on parameters.  Furthermore, the algorithm was not
