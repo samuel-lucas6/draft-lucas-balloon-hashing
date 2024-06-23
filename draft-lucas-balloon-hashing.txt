@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                              22 June 2024
-Expires: 24 December 2024
+Intended status: Informational                              23 June 2024
+Expires: 25 December 2024
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 December 2024.
+   This Internet-Draft will expire on 25 December 2024.
 
 Copyright Notice
 
@@ -203,9 +203,11 @@ Table of Contents
    *  MAX_LENGTH: the maximum output length, which is 4294967295 as an
       integer.
 
+   *  MAX_PEPPER: the maximum pepper length, which is 64 bytes.
+
 3.  The Balloon Algorithm
 
-   Balloon(password, salt, spaceCost, timeCost, parallelism, length)
+Balloon(password, salt, spaceCost, timeCost, parallelism, length, pepper)
 
    Balloon calls an internal function that provides memory hardness in a
    way that supports parallelism, which enables greater memory hardness
@@ -236,6 +238,9 @@ Table of Contents
    *  length: the length of the password hash/derived key in bytes,
       which MUST NOT be greater than MAX_LENGTH.
 
+   *  pepper: an optional secret key, which MUST NOT be greater than
+      MAX_PEPPER bytes long.
+
    Outputs:
 
    *  The password hash/derived key, which is length bytes long.
@@ -244,8 +249,11 @@ Table of Contents
 
 outputs = BlockArray(parallelism, HASH_LEN)
 
-key = ByteArray(0)
-key = PRF(ZeroPad(key, HASH_LEN), password || salt || LE64(password.Length) || LE64(salt.Length))
+if pepper.Length == 0
+    key = ZeroPad(ByteArray(0), HASH_LEN)
+else
+    key = pepper
+key = PRF(key, password || salt || LE64(password.Length) || LE64(salt.Length))
 
 parallel for i = 0 to parallelism - 1
     outputs[i] = BalloonCore(key, salt, spaceCost, timeCost, parallelism, length, i + 1)
@@ -505,10 +513,10 @@ $balloon-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSi
    compromised but the database is not, it can be rotated without having
    to reset any passwords.
 
-   For key derivation, one can use a pepper (e.g. a key file) with a
-   keyed hash function, like HMAC [RFC2104], on the password prior to
-   calling Balloon for additional security.  It is RECOMMENDED to use a
-   256-bit pepper.
+   For key derivation, one can feed a secret key into the pepper
+   parameter for additional security.  This forces an attacker to
+   compromise the pepper before they can guess the password.  It is
+   RECOMMENDED to use a 256-bit pepper.
 
 9.2.  Security Guarantees
 
