@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                              23 June 2024
-Expires: 25 December 2024
+Intended status: Informational                               6 July 2024
+Expires: 7 January 2025
 
 
                             Balloon Hashing
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 December 2024.
+   This Internet-Draft will expire on 7 January 2025.
 
 Copyright Notice
 
@@ -319,7 +319,7 @@ BalloonCore(key, salt, spaceCost, timeCost, parallelism, length, iteration)
 buffer = BlockArray(spaceCost, HASH_LEN)
 counter = 0
 
-buffer[0] = PRF(key, LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(length) || LE64(iteration))
+buffer[0] = PRF(key, LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(iteration))
 for m = 1 to spaceCost - 1
     buffer[m] = PRF(key, LE64(counter++) || buffer[m - 1])
 
