@@ -154,10 +154,12 @@ Table of Contents
       i byte arrays, each with length l.
 
    *  PRF(k, m): the output of a collision-resistant PRF (e.g.  HMAC-
-      SHA512 [RFC2104]) with key k and message m, both byte arrays.  To
-      use a collision-resistant hash function with no key parameter
-      (e.g.  SHA-512 [RFC6234]), you MUST perform prefix MAC and pad the
-      key with zeros to the block size.
+      SHA512 [RFC2104]) with key k and message m, both byte arrays.  If
+      the collision-resistant hash function supports a key parameter
+      (e.g.  BLAKE2b [RFC7693]), that parameter MUST be used.
+      Otherwise, if there is no key parameter (e.g.  SHA-512 [RFC6234]),
+      you MUST perform prefix MAC and pad the key with zeros to the
+      block size (1024 bits for SHA-512).
 
    *  LE64(x): the little-endian encoding of unsigned 64-bit integer x.
 
