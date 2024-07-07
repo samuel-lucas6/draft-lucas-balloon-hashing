@@ -1550,7 +1550,7 @@ return previous
           <p id="section-7-5.2.1">SHA-512: <code>m=256 KiB, t=34</code>; <code>m=512 KiB, t=17</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=4</code><a href="#section-7-5.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-7-6">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128- or 256-bit <code>salt</code>. Other <code>salt</code> lengths <span class="bcp14">SHOULD NOT</span> be used, and the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-6">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128- or 256-bit <code>salt</code>. However, a 64-bit <code>salt</code> <span class="bcp14">MAY</span> be used if there are storage constraints. Regardless, the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-6" class="pilcrow">¶</a></p>
 <p id="section-7-7">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of 128 or 256 bits. For key derivation, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of at least 128 bits.<a href="#section-7-7" class="pilcrow">¶</a></p>
 </section>
 </div>
