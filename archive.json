@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-07T01:26:47.469935+00:00",
+  "timestamp": "2024-07-09T01:21:26.072270+00:00",
   "repo": "samuel-lucas6/draft-lucas-balloon-hashing",
   "labels": [
     {
@@ -71,15 +71,15 @@
       "id": "I_kwDOK_bi8M5630W8",
       "title": "Provide generic parameters/safe minimums",
       "url": "https://github.com/samuel-lucas6/draft-lucas-balloon-hashing/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "samuel-lucas6",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "[OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [TobTu](https://tobtu.com/), the [Argon2 RFC](https://www.rfc-editor.org/rfc/rfc9106.html), etc provide recommended parameters. It would be good to do the same assuming they are realistic, but there's no guidance on parameters from the authors of Balloon. Furthermore, Balloon hasn't been benchmarked properly with different hash functions and parameters to determine suitable recommendations.",
       "createdAt": "2024-01-01T09:54:00Z",
-      "updatedAt": "2024-06-19T01:20:30Z",
-      "closedAt": null,
+      "updatedAt": "2024-07-09T00:56:24Z",
+      "closedAt": "2024-07-07T10:18:07Z",
       "comments": [
         {
           "author": "Sc00bz",
@@ -87,6 +87,20 @@
           "body": "The best way to do this is count the amount of hash block calculations and compare to PBKDF2 because a GPU attacker will be limited by compute instead of bandwidth. Balloon needs to use >1 MiB to start slowing down GPUs. >3 MiB will have a near linear slowdown.\r\n\r\nI'm going to use \"H/block\" to mean \"hash block calculations per block of memory\". This is how many hash blocks are calculated to output a hash. Depending on implementation and settings (I'll use \"delta\" or \"neighbors\" = 3). This is usually 3-17 H/block. Some bad implementations depend on salt length and worse depend on secret data and its length. Defender costs are [paper](https://eprint.iacr.org/2016/027.pdf) (14 H/block), [academic code](https://github.com/henrycg/balloon/blob/master/libballoon/hash_state.c#L145-L178) (3 H/block + 0.5 AES/block), [Rust's](https://github.com/RustCrypto/password-hashes/blob/master/balloon-hash/src/balloon.rs#L143-L201) (14-17+ H/block (depends on salt and secret data lengths)), [Python](https://github.com/nachonavarro/balloon-hashing/blob/master/balloon.py#L61-L94) (14-17+ H/block (depends on salt length)). Attacker costs are paper (8 H/block), academic code (3 H/block), Rust's (8 H/block), Python (8 H/block).\r\n\r\nRough settings for <10 KH/s/GPU (GPU being an RTX 4080 Super or \"2/3 of an RTX 4090\" which should be within a few percent of each other):\r\nBalloon-SHA-256:\r\nAcademic code: `m=256 KiB, t=48`; `m=512 KiB, t=24`; `m=1 MiB, t=12`; `m=2 MiB, t=3-6?`\r\nPaper/Rust's/Python: `m=256 KiB, t=18`; `m=512 KiB, t=9`; `m=1 MiB, t=5`; `m=2 MiB, t=2-3?`\r\n\r\nBalloon-SHA-512:\r\nAcademic code: `m=256 KiB, t=34`; `m=512 KiB, t=17`; `m=1 MiB, t=9`; `m=2 MiB, t=2-4?`\r\nPaper/Rust's/Python: `m=256 KiB, t=13`; `m=512 KiB, t=7`; `m=1 MiB, t=4`; `m=2 MiB, t=1-2?`\r\n\r\nI looked into what the best output size of SHAKE128 for max speed: 248, 520, 792, 1056, and 1328 are 1, 2, 3, 4, and 5 H/block. Best is SHAKE128 with 1328 bits of output but it's not a multiple of a cache line so 512 (2 H/block) or 1024 (4 H/block) would be better. But this puts it at about even with SHA-512 for the attacker. Now the only question is which is faster for the defender. SHAKE128-1024 might be faster even if it's slower than SHA-512 because of the larger block size. Also if the same hash function is used for the deterministic random lookups then SHAKE128-1024 will have an advantage when grabbing 64 bit at a time vs big int math. Note the \"academic code\" is SHA-256 for the hash and AES-128 for the deterministic random lookups. I just remembered that SHAKE128 has an internal parallelism of 5. Which means the slowdown for an attacker doesn't start until >5 MiB but to utilize that there's a performance hit. Yeah... I'll need to implement it to see where it lands. Not that I'm going to do that any time soon.",
           "createdAt": "2024-06-19T01:20:29Z",
           "updatedAt": "2024-06-19T01:20:29Z"
+        },
+        {
+          "author": "samuel-lucas6",
+          "authorAssociation": "OWNER",
+          "body": "After #16, are the academic code recommendations still ok? I've gone for the higher `t=` where you've put a question mark.",
+          "createdAt": "2024-07-07T10:19:44Z",
+          "updatedAt": "2024-07-07T10:19:44Z"
+        },
+        {
+          "author": "Sc00bz",
+          "authorAssociation": "NONE",
+          "body": "With prefix MAC, there's no change. With HMAC, attacker costs will go from 3 H/block to 4 H/block. These formulas and settings are just until a public optimized GPU cracker is released and benchmarked on an RTX 4080 Super and/or an RTX 4090. Also this assumes that the GPU bottleneck is computational vs bandwidth. Which is true for 3 H/block, SHA2, and current gen GPUs.\r\n\r\nTL;DR (oh and the chart at the end):\r\n```\r\ntimeCost > (rawHashSpeed / 10000 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\n\r\nSHA-256: timeCost > (1183275.4267 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\nSHA-512: timeCost > (416536.12 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\n```\r\n\r\n----\r\n\r\nHashes calculated given settings (you can assume `attackerCostFill` is 1. This only fails with weird hashes like SHAKE128 with output of more than 1272 bits):\r\n```\r\nattackerCostFill = 1 H/block\r\n\r\ncost = (attackerCost * spaceCost * timeCost + attackerCostFill * spaceCost) * parallelism\r\n```\r\n\r\nGPU cost target for minimum settings \"<10 kH/s/GPU\" (note this \"H\" is password hashes vs raw hashes). Speeds are \"2/3 of an RTX 4090\" from [PBKDF2-HMAC-SHA256](https://gist.github.com/Chick3nman/32e662a5bb63bc4f51b847bb422222fd#file-rtx_4090_v6-2-6-benchmark-L1141-L1145) and [PBKDF2-HMAC-SHA512](https://gist.github.com/Chick3nman/32e662a5bb63bc4f51b847bb422222fd#file-rtx_4090_v6-2-6-benchmark-L1249-L1253) with 1000 iterations. Multiply by 2002 to get `rawHashSpeed`. Note using the raw hash benchmarks will give higher speeds because it can skip the first 1-ish and last 3-ish rounds. Also some of the message schedule calculations can be saved. Some of this is done for PBKDF2. It's just that it can only cheat on 3 out of the 2002 hashes. Note \"2/3 of an RTX 4090\" should be within a few percent of an RTX 4080 Super.\r\n```\r\nrawHashSpeed = 11,832,754,267 H/s (SHA-256*)\r\nrawHashSpeed = 4,165,361,200 H/s (SHA-512*)\r\n\r\ncost > rawHashSpeed / 10000\r\n```\r\n\r\nTogether and solve for `timeCost`:\r\n```\r\n(attackerCost * spaceCost * timeCost + spaceCost) * parallelism > rawHashSpeed / 10000\r\n\r\ntimeCost > (rawHashSpeed / 10000 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\n\r\nSHA-256: timeCost > (1183275.4267 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\nSHA-512: timeCost > (416536.12 / parallelism - spaceCost) / (attackerCost * spaceCost)\r\n```\r\n\r\n`timeCost` given `attackerCost`, memory size, and `parallelism=1`:\r\n```\r\nSHA-256\r\n   | 256 KiB | 512 KiB | 1 MiB | 2 MiB\r\n---+---------+---------+-------+-------\r\n 3 |    48   |    24   |   12  |    6\r\n 4 |    36   |    18   |    9  |    5\r\n 8 |    18   |     9   |    5  |    3\r\n\r\nSHA-512\r\n   | 256 KiB | 512 KiB | 1 MiB | 2 MiB\r\n---+---------+---------+-------+-------\r\n 3 |    34   |    17   |    9  |    4\r\n 4 |    26   |    13   |    7  |    3\r\n 8 |    13   |     7   |    4  |    2\r\n```",
+          "createdAt": "2024-07-09T00:56:23Z",
+          "updatedAt": "2024-07-09T00:56:23Z"
         }
       ]
     },
