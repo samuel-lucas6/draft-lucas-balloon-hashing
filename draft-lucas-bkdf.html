@@ -1315,6 +1315,12 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <li class="normal" id="section-2-6.11">
           <p id="section-2-6.11.1"><code>MAX_PEPPER</code>: the maximum pepper length, which is 64 bytes.<a href="#section-2-6.11.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="section-2-6.12">
+          <p id="section-2-6.12.1"><code>MAX_ASSOCIATED_DATAS</code>: the maximum number of arrays for the associated data, which is 64 as an integer.<a href="#section-2-6.12.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-6.13">
+          <p id="section-2-6.13.1"><code>MAX_ASSOCIATED_DATA</code>: the maximum length of an associated data array, which is 4294967295 bytes.<a href="#section-2-6.13.1" class="pilcrow">¶</a></p>
+</li>
       </ul>
 </section>
 </div>
@@ -1325,7 +1331,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <div class="alignLeft art-text artwork" id="section-3-1">
 <pre>
-BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper)
+BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associatedData)
 </pre><a href="#section-3-1" class="pilcrow">¶</a>
 </div>
 <p id="section-3-2">BKDF calls an internal function that provides memory hardness in a way that supports parallelism, which enables greater memory hardness without increasing the delay. The result of XORing the internal function outputs together is then used alongside user provided parameters for key derivation following the Extract-then-Expand paradigm.<a href="#section-3-2" class="pilcrow">¶</a></p>
@@ -1352,6 +1358,9 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper)
         <li class="normal" id="section-3-4.7">
           <p id="section-3-4.7.1"><code>pepper</code>: an optional secret key, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PEPPER</code> bytes long.<a href="#section-3-4.7.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="section-3-4.8">
+          <p id="section-3-4.8.1"><code>associatedData</code>: an array of arrays for optional context information. The number of arrays <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATAS</code>, and each array <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATA</code> bytes long.<a href="#section-3-4.8.1" class="pilcrow">¶</a></p>
+</li>
       </ul>
 <p id="section-3-5">Outputs:<a href="#section-3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1368,7 +1377,12 @@ if pepper.Length == 0
     key = ZeroPad(ByteArray(0), HASH_LEN)
 else
     key = pepper
-key = PRF(key, password || salt || LE64(password.Length) || LE64(salt.Length))
+
+ad = ByteArray(0)
+for i = 0 to associatedData.Length - 1
+    ad = ad || LE64(associatedData[i].Length) || associatedData[i]
+
+key = PRF(key, LE64(password.Length) || password || LE64(salt.Length) || salt || ad)
 
 parallel for i = 0 to parallelism - 1
     outputs[i] = BalloonCore(key, spaceCost, timeCost, parallelism, i + 1)
@@ -1614,6 +1628,7 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
 <p id="section-9.1-6">Avoid using hardcoded <code>spaceCost</code>/<code>timeCost</code>/<code>parallelism</code> parameters when performing password hashing; these <span class="bcp14">SHOULD</span> be stored as part of the password hash, as described in <a href="#encoding-password-hashes" class="auto internal xref">Section 8</a>. With key derivation, hardcoded parameters are acceptable if protocol versioning is used.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
 <p id="section-9.1-7">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to encrypt password hashes using an unauthenticated encryption algorithm or an authenticated encryption with associated data (AEAD) scheme <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>]</span> before storage. This forces an attacker to compromise the key, which is stored separately from the database, as well as the database before they can begin password cracking. If the key is compromised but the database is not, it can be rotated without having to reset any passwords.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
 <p id="section-9.1-8">For key derivation, one can feed a secret key into the <code>pepper</code> parameter for additional security. This forces an attacker to compromise the pepper before they can guess the password. It is <span class="bcp14">RECOMMENDED</span> to use a 256-bit pepper.<a href="#section-9.1-8" class="pilcrow">¶</a></p>
+<p id="section-9.1-9">To bind context information to the output, like a user ID and server ID for password-authenticated key exchange (PAKE) algorithms, the <code>associatedData</code> parameter can be used. However, in most cases, this parameter is not required.<a href="#section-9.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-guarantees">
