@@ -449,8 +449,8 @@ return previous
    *  SHA-512: m=256 KiB, t=34; m=512 KiB, t=17; m=1 MiB, t=9; m=2 MiB,
       t=4
 
-   In all cases, it is RECOMMENDED to use a 128- or 256-bit salt.
-   However, a 64-bit salt MAY be used if there are storage constraints.
+   In all cases, it is RECOMMENDED to use a 128-bit salt.  However, a
+   64-bit salt MAY be used if there are storage constraints.
    Regardless, the salt length SHOULD NOT vary in your protocol/
    application.  See Section 9 for guidance on generating the salt.
 
@@ -507,8 +507,7 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
    verifying a password hash or deriving the same key.  It SHOULD be
    randomly generated using a cryptographically secure pseudorandom
    number generator (CSPRNG).  However, it MAY be deterministic and
-   predictable if random generation is not possible.  It SHOULD be at
-   least 128 bits long and SHOULD NOT exceed 256 bits.
+   predictable if random generation is not possible.
 
    The spaceCost, timeCost, and parallelism MUST be carefully chosen to
    avoid denial-of-service and user frustration whilst ensuring adequate
