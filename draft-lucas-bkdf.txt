@@ -717,6 +717,9 @@ Appendix A.  Test Vectors
 
 A.1.  BKDF-SHA-256
 
+   NOTE: These test vectors are out of date and will be updated when the
+   new design has been finalised.
+
 A.1.1.  Test Vector 1
 
   password: 70617373776f7264
