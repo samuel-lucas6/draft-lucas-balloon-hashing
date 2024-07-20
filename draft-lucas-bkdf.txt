@@ -179,7 +179,7 @@ Table of Contents
    Constants:
 
    *  HASH_LEN: the output length of the hash function in bytes.  For an
-      XOF, this MUST be 1024 bytes.
+      XOF, this MUST be 128 bytes.
 
    *  MAX_PASSWORD: the maximum password length, which is 4294967295
       bytes.
