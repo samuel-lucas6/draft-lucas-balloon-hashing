@@ -380,6 +380,10 @@ return previous
    *  Use an incremental hash function API rather than manual
       concatenation.
 
+   *  If possible with the hash function API, cache the hash function
+      state after processing the key so it does not need to be processed
+      again.
+
 6.  Choosing the Hash Function
 
    The choice of cryptographic hash function affects the performance and
