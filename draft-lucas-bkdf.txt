@@ -186,10 +186,9 @@ Table of Contents
 
    *  MAX_SALT: the maximum salt length, which is 4294967295 bytes.
 
-   *  MIN_SPACECOST: the minimum space cost, which is 1 as an integer.
+   *  MIN_SPACECOST: the minimum space cost, which is 0 as an integer.
 
-   *  MAX_SPACECOST: the maximum space cost, which is 4294967296 as an
-      integer.
+   *  MAX_SPACECOST: the maximum space cost, which is 32 as an integer.
 
    *  MIN_TIMECOST: the minimum time cost, which is 1 as an integer.
 
@@ -242,9 +241,9 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associate
    *  salt: the unique salt, which MUST NOT be greater than MAX_SALT
       bytes long.
 
-   *  spaceCost: the memory size in blocks, which MUST be an integer
-      between MIN_SPACECOST and MAX_SPACECOST that is a power of 2.  A
-      block is HASH_LEN bytes long.
+   *  spaceCost: the memory size in 2**spaceCost blocks, where a block
+      is HASH_LEN bytes long.  It MUST be an integer between
+      MIN_SPACECOST and MAX_SPACECOST.
 
    *  timeCost: the number of rounds, which MUST be an integer between
       MIN_TIMECOST and MAX_TIMECOST.
@@ -338,6 +337,7 @@ return result.Slice(0, length)
 
    Steps:
 
+spaceCost = 2**spaceCost
 buffer = BlockArray(spaceCost, HASH_LEN)
 counter = 0
 
@@ -444,9 +444,9 @@ return previous
        account different types of user devices and denial-of-service.
        For instance, mobile phones versus laptops/desktops.
 
-   4.  Convert the MiB/GiB memory size that is a power of 2 to bytes.
-       Then set spaceCost to bytes / HASH_LEN, which is the number of
-       blocks.
+   4.  Convert the closest MiB/GiB memory size that is a power of 2 to
+       bytes.  Then set spaceCost to log2(bytes / HASH_LEN), which is
+       the binary logarithm of the number of blocks.
 
    5.  Find the timeCost that brings you closest to the maximum
        acceptable delay or target number of authentication attempts per
@@ -495,7 +495,8 @@ return previous
    *  v=version: this is version 1 of BKDF.  If the design is modified,
       the version will be incremented.
 
-   *  m=spaceCost: the memory size in blocks, not KiB.
+   *  m=spaceCost: the space cost as a number, not the memory size in
+      blocks or KiB.
 
    *  t=timeCost: the number of rounds.
 
@@ -509,7 +510,7 @@ return previous
 
    Here is an example encoded hash:
 
-$bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
+$bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
 
 9.  Security Considerations
 

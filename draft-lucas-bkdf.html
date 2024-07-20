@@ -1292,10 +1292,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-6.3.1"><code>MAX_SALT</code>: the maximum salt length, which is 4294967295 bytes.<a href="#section-2-6.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.4">
-          <p id="section-2-6.4.1"><code>MIN_SPACECOST</code>: the minimum space cost, which is 1 as an integer.<a href="#section-2-6.4.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.4.1"><code>MIN_SPACECOST</code>: the minimum space cost, which is 0 as an integer.<a href="#section-2-6.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.5">
-          <p id="section-2-6.5.1"><code>MAX_SPACECOST</code>: the maximum space cost, which is 4294967296 as an integer.<a href="#section-2-6.5.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.5.1"><code>MAX_SPACECOST</code>: the maximum space cost, which is 32 as an integer.<a href="#section-2-6.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.6">
           <p id="section-2-6.6.1"><code>MIN_TIMECOST</code>: the minimum time cost, which is 1 as an integer.<a href="#section-2-6.6.1" class="pilcrow">¶</a></p>
@@ -1355,7 +1355,7 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associate
           <p id="section-3-5.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-3-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-5.3">
-          <p id="section-3-5.3.1"><code>spaceCost</code>: the memory size in blocks, which <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code> that is a power of 2. A block is <code>HASH_LEN</code> bytes long.<a href="#section-3-5.3.1" class="pilcrow">¶</a></p>
+          <p id="section-3-5.3.1"><code>spaceCost</code>: the memory size in <code>2**spaceCost</code> blocks, where a block is <code>HASH_LEN</code> bytes long. It <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code>.<a href="#section-3-5.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-5.4">
           <p id="section-3-5.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-5.4.1" class="pilcrow">¶</a></p>
@@ -1465,6 +1465,7 @@ BalloonCore(key, spaceCost, timeCost, parallelism, iteration)
 <p id="section-4-8">Steps:<a href="#section-4-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4-9">
 <pre>
+spaceCost = 2**spaceCost
 buffer = BlockArray(spaceCost, HASH_LEN)
 counter = 0
 
@@ -1561,7 +1562,7 @@ return previous
           <p id="section-7-4.3.1">Determine the maximum amount of memory available, taking into account different types of user devices and denial-of-service. For instance, mobile phones versus laptops/desktops.<a href="#section-7-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-4.4">
-          <p id="section-7-4.4.1">Convert the MiB/GiB memory size that is a power of 2 to bytes. Then set <code>spaceCost</code> to <code>bytes / HASH_LEN</code>, which is the number of blocks.<a href="#section-7-4.4.1" class="pilcrow">¶</a></p>
+          <p id="section-7-4.4.1">Convert the closest MiB/GiB memory size that is a power of 2 to bytes. Then set <code>spaceCost</code> to <code>log2(bytes / HASH_LEN)</code>, which is the binary logarithm of the number of blocks.<a href="#section-7-4.4.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-7-4.5">
           <p id="section-7-4.5.1">Find the <code>timeCost</code> that brings you closest to the maximum acceptable delay or target number of authentication attempts per second by running benchmarks.<a href="#section-7-4.5.1" class="pilcrow">¶</a></p>
@@ -1608,7 +1609,7 @@ $bkdf-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
           <p id="section-8-3.2.1"><code>v=version</code>: this is version 1 of BKDF. If the design is modified, the version will be incremented.<a href="#section-8-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.3">
-          <p id="section-8-3.3.1"><code>m=spaceCost</code>: the memory size in blocks, not KiB.<a href="#section-8-3.3.1" class="pilcrow">¶</a></p>
+          <p id="section-8-3.3.1"><code>m=spaceCost</code>: the space cost as a number, not the memory size in blocks or KiB.<a href="#section-8-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-8-3.4">
           <p id="section-8-3.4.1"><code>t=timeCost</code>: the number of rounds.<a href="#section-8-3.4.1" class="pilcrow">¶</a></p>
@@ -1626,7 +1627,7 @@ $bkdf-hash$v=version$m=spaceCost,t=timeCost,p=parallelism$salt$hash
 <p id="section-8-4">Here is an example encoded hash:<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
-$bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
+$bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GVlnqmNEDfs
 </pre><a href="#section-8-5" class="pilcrow">¶</a>
 </div>
 </section>
