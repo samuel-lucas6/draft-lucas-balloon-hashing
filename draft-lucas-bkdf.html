@@ -1548,44 +1548,45 @@ return previous
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-choosing-the-parameters" class="section-name selfRef">Choosing the Parameters</a>
       </h2>
 <p id="section-7-1">The higher the <code>spaceCost</code> and <code>timeCost</code>, the longer it takes to compute an output. If these values are too small, security is unnecessarily reduced. If they are too large, there is a risk of user frustration and denial-of-service for different types of user devices and servers. To make matters even more complicated, these parameters may need to be increased over time as hardware gets faster/smaller.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">The following procedure can be used to choose parameters:<a href="#section-7-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7-3">
-<li id="section-7-3.1">
-          <p id="section-7-3.1.1">For performing authentication on a server or running the algorithm on any type of user device, set the <code>parallelism</code> to 1. This avoids resource exhaustion attacks and slowdowns on machines with few CPU cores. Otherwise, set it to the maximum number of CPU cores the machine can dedicate to the computation.<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The purpose of <code>parallelism</code> is to enable greater memory hardness without increasing the delay. This is because the mixing is done by multiple CPU cores simultaneously rather than serially. However, a poor choice of <code>parallelism</code> can also cause denial-of-service or give the attacker an advantage.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">The following procedure can be used to choose parameters:<a href="#section-7-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-7-4">
+<li id="section-7-4.1">
+          <p id="section-7-4.1.1">For performing authentication on a server or running the algorithm on any type of user device, set the <code>parallelism</code> to 1. This avoids resource exhaustion attacks and slowdowns on machines with few CPU cores. Otherwise, set it to the maximum number of CPU cores the machine can dedicate to the computation.<a href="#section-7-4.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-7-3.2">
-          <p id="section-7-3.2.1">Establish the maximum acceptable delay for the user. For example, 100-500 ms for authentication, 250-1000 ms for file encryption, and 1000-5000 ms for disk encryption. On servers, you also need to factor in the maximum number of authentication attempts per second.<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
+        <li id="section-7-4.2">
+          <p id="section-7-4.2.1">Establish the maximum acceptable delay for the user. For example, 100-500 ms for authentication, 250-1000 ms for file encryption, and 1000-5000 ms for disk encryption. On servers, you also need to factor in the maximum number of authentication attempts per second.<a href="#section-7-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-7-3.3">
-          <p id="section-7-3.3.1">Determine the maximum amount of memory available, taking into account different types of user devices and denial-of-service. For instance, mobile phones versus laptops/desktops.<a href="#section-7-3.3.1" class="pilcrow">¶</a></p>
+        <li id="section-7-4.3">
+          <p id="section-7-4.3.1">Determine the maximum amount of memory available, taking into account different types of user devices and denial-of-service. For instance, mobile phones versus laptops/desktops.<a href="#section-7-4.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-7-3.4">
-          <p id="section-7-3.4.1">Convert the MiB/GiB memory size that is a power of 2 to bytes. Then set <code>spaceCost</code> to <code>bytes / HASH_LEN</code>, which is the number of blocks.<a href="#section-7-3.4.1" class="pilcrow">¶</a></p>
+        <li id="section-7-4.4">
+          <p id="section-7-4.4.1">Convert the MiB/GiB memory size that is a power of 2 to bytes. Then set <code>spaceCost</code> to <code>bytes / HASH_LEN</code>, which is the number of blocks.<a href="#section-7-4.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-7-3.5">
-          <p id="section-7-3.5.1">Find the <code>timeCost</code> that brings you closest to the maximum acceptable delay or target number of authentication attempts per second by running benchmarks.<a href="#section-7-3.5.1" class="pilcrow">¶</a></p>
+        <li id="section-7-4.5">
+          <p id="section-7-4.5.1">Find the <code>timeCost</code> that brings you closest to the maximum acceptable delay or target number of authentication attempts per second by running benchmarks.<a href="#section-7-4.5.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-7-3.6">
-          <p id="section-7-3.6.1">If <code>timeCost</code> is only 1, reduce <code>spaceCost</code> to be able to increase <code>timeCost</code>. Performing multiple rounds is beneficial for security <span>[<a href="#AB17" class="cite xref">AB17</a>]</span>.<a href="#section-7-3.6.1" class="pilcrow">¶</a></p>
+        <li id="section-7-4.6">
+          <p id="section-7-4.6.1">If <code>timeCost</code> is only 1, reduce <code>spaceCost</code> to be able to increase <code>timeCost</code>. Performing multiple rounds is beneficial for security <span>[<a href="#AB17" class="cite xref">AB17</a>]</span>.<a href="#section-7-4.6.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-7-4">To cause an attacker to get &lt; 10 kH/s on an RTX 4080 Super GPU, the parameters must be at least one of the following when using SHA-256, SHA-512, HMAC-SHA256, or HMAC-SHA512 as the collision-resistant PRF:<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">To cause an attacker to get &lt; 10 kH/s on an RTX 4080 Super GPU, the parameters must be at least one of the following when using SHA-256, SHA-512, HMAC-SHA256, or HMAC-SHA512 as the collision-resistant PRF:<a href="#section-7-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7-5.1">
-          <p id="section-7-5.1.1">SHA-256: <code>m=256 KiB, t=48</code>; <code>m=512 KiB, t=24</code>; <code>m=1 MiB, t=12</code>; <code>m=2 MiB, t=6</code><a href="#section-7-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-7-6.1">
+          <p id="section-7-6.1.1">SHA-256: <code>m=256 KiB, t=48</code>; <code>m=512 KiB, t=24</code>; <code>m=1 MiB, t=12</code>; <code>m=2 MiB, t=6</code><a href="#section-7-6.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-7-5.2">
-          <p id="section-7-5.2.1">SHA-512: <code>m=256 KiB, t=34</code>; <code>m=512 KiB, t=17</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=4</code><a href="#section-7-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-7-6.2">
+          <p id="section-7-6.2.1">SHA-512: <code>m=256 KiB, t=34</code>; <code>m=512 KiB, t=17</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=4</code><a href="#section-7-6.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-7-5.3">
-          <p id="section-7-5.3.1">HMAC-SHA256: <code>m=256 KiB, t=36</code>; <code>m=512 KiB, t=18</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=5</code><a href="#section-7-5.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-7-6.3">
+          <p id="section-7-6.3.1">HMAC-SHA256: <code>m=256 KiB, t=36</code>; <code>m=512 KiB, t=18</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=5</code><a href="#section-7-6.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-7-5.4">
-          <p id="section-7-5.4.1">HMAC-SHA512: <code>m=256 KiB, t=26</code>; <code>m=512 KiB, t=13</code>; <code>m=1 MiB, t=7</code>; <code>m=2 MiB, t=3</code><a href="#section-7-5.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-7-6.4">
+          <p id="section-7-6.4.1">HMAC-SHA512: <code>m=256 KiB, t=26</code>; <code>m=512 KiB, t=13</code>; <code>m=1 MiB, t=7</code>; <code>m=2 MiB, t=3</code><a href="#section-7-6.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-7-6">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128-bit <code>salt</code>. However, a 64-bit <code>salt</code> <span class="bcp14">MAY</span> be used if there are storage constraints. Regardless, the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-6" class="pilcrow">¶</a></p>
-<p id="section-7-7">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of 128 or 256 bits. For key derivation, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of at least 128 bits.<a href="#section-7-7" class="pilcrow">¶</a></p>
+<p id="section-7-7">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128-bit <code>salt</code>. However, a 64-bit <code>salt</code> <span class="bcp14">MAY</span> be used if there are storage constraints. Regardless, the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-7" class="pilcrow">¶</a></p>
+<p id="section-7-8">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of 128 or 256 bits. For key derivation, it is <span class="bcp14">RECOMMENDED</span> to use a <code>length</code> of at least 128 bits.<a href="#section-7-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="encoding-password-hashes">
@@ -1643,7 +1644,7 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
 <p id="section-9.1-1">Technically, only preimage resistance is required for password hashing to prevent the attacker learning information about the password from the hash. However, non-collision-resistant hash functions (e.g. MD5 <span>[<a href="#RFC6151" class="cite xref">RFC6151</a>]</span> and SHA-1 <span>[<a href="#RFC6194" class="cite xref">RFC6194</a>]</span>) <span class="bcp14">MUST NOT</span> be used. Such functions are cryptographically weak and unsuitable for new protocols.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">If possible, store the password in protected memory and/or erase the password from memory once it is no longer required. Otherwise, an attacker may be able to recover the password from memory or the disk.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 <p id="section-9.1-3">The salt <span class="bcp14">MUST</span> be unique each time you call the function unless verifying a password hash or deriving the same key. It <span class="bcp14">SHOULD</span> be randomly generated using a cryptographically secure pseudorandom number generator (CSPRNG). However, it <span class="bcp14">MAY</span> be deterministic and predictable if random generation is not possible.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
-<p id="section-9.1-4">The <code>spaceCost</code>, <code>timeCost</code>, and <code>parallelism</code> <span class="bcp14">MUST</span> be carefully chosen to avoid denial-of-service and user frustration whilst ensuring adequate protection against password cracking.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
+<p id="section-9.1-4">The <code>spaceCost</code>, <code>timeCost</code>, and <code>parallelism</code> <span class="bcp14">MUST</span> be carefully chosen to avoid denial-of-service and user frustration whilst ensuring adequate protection against password cracking. See the <a href="#choosing-the-parameters" class="auto internal xref">Section 7</a> section for more information.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
 <p id="section-9.1-5">If you want to derive multiple keys (e.g. for encryption and authentication), you <span class="bcp14">MUST</span> only run the algorithm once and use different portions of the output as separate keys. Otherwise, the attacker may have an advantage, like only needing to run the algorithm once instead of twice to check a password, and you will be forced to use weaker parameters.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
 <p id="section-9.1-6">Avoid using hardcoded <code>spaceCost</code>/<code>timeCost</code>/<code>parallelism</code> parameters when performing password hashing; these <span class="bcp14">SHOULD</span> be stored as part of the password hash, as described in <a href="#encoding-password-hashes" class="auto internal xref">Section 8</a>. With key derivation, hardcoded parameters are acceptable if protocol versioning is used.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
 <p id="section-9.1-7">For password hashing, it is <span class="bcp14">RECOMMENDED</span> to encrypt password hashes using an unauthenticated encryption algorithm or an authenticated encryption with associated data (AEAD) scheme <span>[<a href="#RFC5116" class="cite xref">RFC5116</a>]</span> before storage. This forces an attacker to compromise the key, which is stored separately from the database, as well as the database before they can begin password cracking. If the key is compromised but the database is not, it can be rotated without having to reset any passwords.<a href="#section-9.1-7" class="pilcrow">¶</a></p>

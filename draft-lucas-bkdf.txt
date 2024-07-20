@@ -420,6 +420,12 @@ return previous
    servers.  To make matters even more complicated, these parameters may
    need to be increased over time as hardware gets faster/smaller.
 
+   The purpose of parallelism is to enable greater memory hardness
+   without increasing the delay.  This is because the mixing is done by
+   multiple CPU cores simultaneously rather than serially.  However, a
+   poor choice of parallelism can also cause denial-of-service or give
+   the attacker an advantage.
+
    The following procedure can be used to choose parameters:
 
    1.  For performing authentication on a server or running the
@@ -528,7 +534,8 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
 
    The spaceCost, timeCost, and parallelism MUST be carefully chosen to
    avoid denial-of-service and user frustration whilst ensuring adequate
-   protection against password cracking.
+   protection against password cracking.  See the Section 7 section for
+   more information.
 
    If you want to derive multiple keys (e.g. for encryption and
    authentication), you MUST only run the algorithm once and use
