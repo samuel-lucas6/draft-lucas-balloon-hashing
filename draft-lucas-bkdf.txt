@@ -338,11 +338,11 @@ buffer[0] = PRF(key, LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE6
 for m = 1 to spaceCost - 1
     buffer[m] = PRF(key, LE64(counter++) || buffer[m - 1])
 
-emptyKey = ByteArray(0)
+emptyKey = ZeroPad(ByteArray(0), HASH_LEN)
 previous = buffer[spaceCost - 1]
 for t = 0 to timeCost - 1
     for m = 0 to spaceCost - 1
-        pseudorandom = PRF(ZeroPad(emptyKey, HASH_LEN), LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(iteration))
+        pseudorandom = PRF(emptyKey, LE64(counter++) || LE64(spaceCost) || LE64(timeCost) || LE64(parallelism) || LE64(iteration))
         other1 = ReadLE64(pseudorandom.Slice(0, 8)) % spaceCost
         other2 = ReadLE64(pseudorandom.Slice(8, 8)) % spaceCost
         other3 = ReadLE64(pseudorandom.Slice(16, 8)) % spaceCost
