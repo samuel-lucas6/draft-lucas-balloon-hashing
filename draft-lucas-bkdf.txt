@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                              13 July 2024
-Expires: 14 January 2025
+Intended status: Informational                              20 July 2024
+Expires: 21 January 2025
 
 
                  Balloon Key Derivation Function (BKDF)
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 January 2025.
+   This Internet-Draft will expire on 21 January 2025.
 
 Copyright Notice
 
@@ -440,14 +440,20 @@ return previous
        [AB17].
 
    To cause an attacker to get < 10 kH/s on an RTX 4080 Super GPU, the
-   parameters must be at least one of the following when using SHA-256
-   or SHA-512 as the collision-resistant PRF:
+   parameters must be at least one of the following when using SHA-256,
+   SHA-512, HMAC-SHA256, or HMAC-SHA512 as the collision-resistant PRF:
 
    *  SHA-256: m=256 KiB, t=48; m=512 KiB, t=24; m=1 MiB, t=12; m=2 MiB,
       t=6
 
    *  SHA-512: m=256 KiB, t=34; m=512 KiB, t=17; m=1 MiB, t=9; m=2 MiB,
       t=4
+
+   *  HMAC-SHA256: m=256 KiB, t=36; m=512 KiB, t=18; m=1 MiB, t=9; m=2
+      MiB, t=5
+
+   *  HMAC-SHA512: m=256 KiB, t=26; m=512 KiB, t=13; m=1 MiB, t=7; m=2
+      MiB, t=3
 
    In all cases, it is RECOMMENDED to use a 128-bit salt.  However, a
    64-bit salt MAY be used if there are storage constraints.

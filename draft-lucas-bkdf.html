@@ -1028,7 +1028,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lucas</td>
-<td class="center">Expires 14 January 2025</td>
+<td class="center">Expires 21 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1041,12 +1041,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-lucas-bkdf-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-13" class="published">13 July 2024</time>
+<time datetime="2024-07-20" class="published">20 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-14">14 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-01-21">21 January 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1091,7 +1091,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1555,13 +1555,19 @@ return previous
           <p id="section-7-3.6.1">If <code>timeCost</code> is only 1, reduce <code>spaceCost</code> to be able to increase <code>timeCost</code>. Performing multiple rounds is beneficial for security <span>[<a href="#AB17" class="cite xref">AB17</a>]</span>.<a href="#section-7-3.6.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-7-4">To cause an attacker to get &lt; 10 kH/s on an RTX 4080 Super GPU, the parameters must be at least one of the following when using SHA-256 or SHA-512 as the collision-resistant PRF:<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-4">To cause an attacker to get &lt; 10 kH/s on an RTX 4080 Super GPU, the parameters must be at least one of the following when using SHA-256, SHA-512, HMAC-SHA256, or HMAC-SHA512 as the collision-resistant PRF:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7-5.1">
           <p id="section-7-5.1.1">SHA-256: <code>m=256 KiB, t=48</code>; <code>m=512 KiB, t=24</code>; <code>m=1 MiB, t=12</code>; <code>m=2 MiB, t=6</code><a href="#section-7-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-7-5.2">
           <p id="section-7-5.2.1">SHA-512: <code>m=256 KiB, t=34</code>; <code>m=512 KiB, t=17</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=4</code><a href="#section-7-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-5.3">
+          <p id="section-7-5.3.1">HMAC-SHA256: <code>m=256 KiB, t=36</code>; <code>m=512 KiB, t=18</code>; <code>m=1 MiB, t=9</code>; <code>m=2 MiB, t=5</code><a href="#section-7-5.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-5.4">
+          <p id="section-7-5.4.1">HMAC-SHA512: <code>m=256 KiB, t=26</code>; <code>m=512 KiB, t=13</code>; <code>m=1 MiB, t=7</code>; <code>m=2 MiB, t=3</code><a href="#section-7-5.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-7-6">In all cases, it is <span class="bcp14">RECOMMENDED</span> to use a 128-bit <code>salt</code>. However, a 64-bit <code>salt</code> <span class="bcp14">MAY</span> be used if there are storage constraints. Regardless, the <code>salt</code> length <span class="bcp14">SHOULD NOT</span> vary in your protocol/application. See <a href="#security-considerations" class="auto internal xref">Section 9</a> for guidance on generating the <code>salt</code>.<a href="#section-7-6" class="pilcrow">¶</a></p>
@@ -1653,6 +1659,7 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
 <p id="section-10-1">This document has no IANA actions.<a href="#section-10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="sec-combined-references">
 <section id="section-11">
       <h2 id="name-references">
 <a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
@@ -1752,6 +1759,7 @@ $bkdf-sha256$v=1$m=1024,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1
 </section>
 </div>
 </section>
+</div>
 <div id="test-vectors">
 <section id="appendix-A">
       <h2 id="name-test-vectors">
