@@ -393,20 +393,20 @@ return previous
 
 6.  Choosing the Hash Function
 
-   The choice of cryptographic hash function affects the performance and
-   security of BKDF in two ways:
+   The choice of collision-resistant hash function affects the
+   performance and security of BKDF in two ways:
 
    1.  For the same parameters, the attacker has an advantage if the
        algorithm is faster in hardware versus software.  They will be
        able to do the computation in less time than the defender.
 
    2.  For the same delay, the defender will be forced to use smaller
-       parameters with a slower cryptographic hash function in software.
-       Using a faster algorithm in software means stronger parameters
-       can be used.
+       parameters with a slower collision-resistant hash function in
+       software.  Using a faster algorithm in software means stronger
+       parameters can be used.
 
-   It is RECOMMENDED to use a cryptographic hash function that is fast
-   in software but relatively slow in hardware, such as BLAKE2b
+   It is RECOMMENDED to use a collision-resistant hash function that is
+   fast in software but relatively slow in hardware, such as BLAKE2b
    [RFC7693].  As another example, SHA-512 is preferable to SHA-256
    [RFC6234].  Finally, SHA-3 [FIPS202] is NOT RECOMMENDED as it is
    slower in software compared to in hardware.
@@ -518,10 +518,10 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
 
    Technically, only preimage resistance is required for password
    hashing to prevent the attacker learning information about the
-   password from the hash.  However, non-collision-resistant hash
-   functions (e.g.  MD5 [RFC6151] and SHA-1 [RFC6194]) MUST NOT be used.
-   Such functions are cryptographically weak and unsuitable for new
-   protocols.
+   password from the hash.  However, hash functions that are not
+   collision resistant (e.g.  MD5 [RFC6151] and SHA-1 [RFC6194]) MUST
+   NOT be used.  Such functions are cryptographically weak and
+   unsuitable for new protocols.
 
    If possible, store the password in protected memory and/or erase the
    password from memory once it is no longer required.  Otherwise, an

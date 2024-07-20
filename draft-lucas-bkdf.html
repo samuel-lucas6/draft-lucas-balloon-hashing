@@ -1531,16 +1531,16 @@ return previous
       <h2 id="name-choosing-the-hash-function">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-choosing-the-hash-function" class="section-name selfRef">Choosing the Hash Function</a>
       </h2>
-<p id="section-6-1">The choice of cryptographic hash function affects the performance and security of BKDF in two ways:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The choice of collision-resistant hash function affects the performance and security of BKDF in two ways:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-2">
 <li id="section-6-2.1">
           <p id="section-6-2.1.1">For the same parameters, the attacker has an advantage if the algorithm is faster in hardware versus software. They will be able to do the computation in less time than the defender.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-6-2.2">
-          <p id="section-6-2.2.1">For the same delay, the defender will be forced to use smaller parameters with a slower cryptographic hash function in software. Using a faster algorithm in software means stronger parameters can be used.<a href="#section-6-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-6-2.2.1">For the same delay, the defender will be forced to use smaller parameters with a slower collision-resistant hash function in software. Using a faster algorithm in software means stronger parameters can be used.<a href="#section-6-2.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-6-3">It is <span class="bcp14">RECOMMENDED</span> to use a cryptographic hash function that is fast in software but relatively slow in hardware, such as BLAKE2b <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>. As another example, SHA-512 is preferable to SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>. Finally, SHA-3 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span> is <span class="bcp14">NOT RECOMMENDED</span> as it is slower in software compared to in hardware.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-3">It is <span class="bcp14">RECOMMENDED</span> to use a collision-resistant hash function that is fast in software but relatively slow in hardware, such as BLAKE2b <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>. As another example, SHA-512 is preferable to SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>. Finally, SHA-3 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span> is <span class="bcp14">NOT RECOMMENDED</span> as it is slower in software compared to in hardware.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="choosing-the-parameters">
@@ -1642,7 +1642,7 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
         <h3 id="name-usage-guidelines">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-usage-guidelines" class="section-name selfRef">Usage Guidelines</a>
         </h3>
-<p id="section-9.1-1">Technically, only preimage resistance is required for password hashing to prevent the attacker learning information about the password from the hash. However, non-collision-resistant hash functions (e.g. MD5 <span>[<a href="#RFC6151" class="cite xref">RFC6151</a>]</span> and SHA-1 <span>[<a href="#RFC6194" class="cite xref">RFC6194</a>]</span>) <span class="bcp14">MUST NOT</span> be used. Such functions are cryptographically weak and unsuitable for new protocols.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.1-1">Technically, only preimage resistance is required for password hashing to prevent the attacker learning information about the password from the hash. However, hash functions that are not collision resistant (e.g. MD5 <span>[<a href="#RFC6151" class="cite xref">RFC6151</a>]</span> and SHA-1 <span>[<a href="#RFC6194" class="cite xref">RFC6194</a>]</span>) <span class="bcp14">MUST NOT</span> be used. Such functions are cryptographically weak and unsuitable for new protocols.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">If possible, store the password in protected memory and/or erase the password from memory once it is no longer required. Otherwise, an attacker may be able to recover the password from memory or the disk.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 <p id="section-9.1-3">The salt <span class="bcp14">MUST</span> be unique each time you call the function unless verifying a password hash or deriving the same key. It <span class="bcp14">SHOULD</span> be randomly generated using a cryptographically secure pseudorandom number generator (CSPRNG). However, it <span class="bcp14">MAY</span> be deterministic and predictable if random generation is not possible.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 <p id="section-9.1-4">The <code>spaceCost</code>, <code>timeCost</code>, and <code>parallelism</code> <span class="bcp14">MUST</span> be carefully chosen to avoid denial-of-service and user frustration whilst ensuring adequate protection against password cracking. See the <a href="#choosing-the-parameters" class="auto internal xref">Section 7</a> section for more information.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
