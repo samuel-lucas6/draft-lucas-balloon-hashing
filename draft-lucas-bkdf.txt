@@ -207,7 +207,9 @@ Table of Contents
    *  MAX_LENGTH: the maximum output length, which is 4294967295 as an
       integer.
 
-   *  MAX_PEPPER: the maximum pepper length, which is 64 bytes.
+   *  MAX_PEPPER: the maximum pepper length, which is 64 bytes or the
+      maximum collision-resistant PRF key length if this is less than 64
+      bytes (e.g. 32 bytes).
 
    *  MAX_ASSOCIATED_DATAS: the maximum number of arrays for the
       associated data, which is 64 as an integer.
