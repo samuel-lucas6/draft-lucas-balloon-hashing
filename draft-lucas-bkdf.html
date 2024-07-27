@@ -1349,41 +1349,42 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associate
           <p id="section-3-3.3.1">KDF Expand: a KDF in feedback mode is used to derive key material for the user from the derived key, context information, and the XORed outputs.<a href="#section-3-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-3-4">Inputs:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-4">Note that the internal function calls <span class="bcp14">MUST</span> be implemented in parallel, not serially. Otherwise, the <code>parallelism</code> parameter essentially becomes another <code>timeCost</code> parameter.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Inputs:<a href="#section-3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-5.1">
-          <p id="section-3-5.1.1"><code>password</code>: the password to be hashed, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PASSWORD</code> bytes long.<a href="#section-3-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-6.1">
+          <p id="section-3-6.1.1"><code>password</code>: the password to be hashed, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PASSWORD</code> bytes long.<a href="#section-3-6.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.2">
-          <p id="section-3-5.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-3-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.2">
+          <p id="section-3-6.2.1"><code>salt</code>: the unique salt, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_SALT</code> bytes long.<a href="#section-3-6.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.3">
-          <p id="section-3-5.3.1"><code>spaceCost</code>: the memory size in <code>2**spaceCost</code> blocks, where a block is <code>HASH_LEN</code> bytes long. It <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code>.<a href="#section-3-5.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.3">
+          <p id="section-3-6.3.1"><code>spaceCost</code>: the memory size in <code>2**spaceCost</code> blocks, where a block is <code>HASH_LEN</code> bytes long. It <span class="bcp14">MUST</span> be an integer between <code>MIN_SPACECOST</code> and <code>MAX_SPACECOST</code>.<a href="#section-3-6.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.4">
-          <p id="section-3-5.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-5.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.4">
+          <p id="section-3-6.4.1"><code>timeCost</code>: the number of rounds, which <span class="bcp14">MUST</span> be an integer between <code>MIN_TIMECOST</code> and <code>MAX_TIMECOST</code>.<a href="#section-3-6.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.5">
-          <p id="section-3-5.5.1"><code>parallelism</code>: the number of CPU cores/internal function calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-3-5.5.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.5">
+          <p id="section-3-6.5.1"><code>parallelism</code>: the number of CPU cores/internal function calls in parallel, which <span class="bcp14">MUST</span> be an integer between <code>MIN_PARALLELISM</code> and <code>MAX_PARALLELISM</code>.<a href="#section-3-6.5.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.6">
-          <p id="section-3-5.6.1"><code>length</code>: the length of the password hash/derived key in bytes, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_LENGTH</code>.<a href="#section-3-5.6.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.6">
+          <p id="section-3-6.6.1"><code>length</code>: the length of the password hash/derived key in bytes, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_LENGTH</code>.<a href="#section-3-6.6.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.7">
-          <p id="section-3-5.7.1"><code>pepper</code>: an optional secret key, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PEPPER</code> bytes long.<a href="#section-3-5.7.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.7">
+          <p id="section-3-6.7.1"><code>pepper</code>: an optional secret key, which <span class="bcp14">MUST NOT</span> be greater than <code>MAX_PEPPER</code> bytes long.<a href="#section-3-6.7.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.8">
-          <p id="section-3-5.8.1"><code>associatedData</code>: an array of arrays for optional context information. The number of arrays <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATAS</code>, and each array <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATA</code> bytes long.<a href="#section-3-5.8.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.8">
+          <p id="section-3-6.8.1"><code>associatedData</code>: an array of arrays for optional context information. The number of arrays <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATAS</code>, and each array <span class="bcp14">MUST NOT</span> be greater than <code>MAX_ASSOCIATED_DATA</code> bytes long.<a href="#section-3-6.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-6">Outputs:<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">Outputs:<a href="#section-3-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-7.1">
-          <p id="section-3-7.1.1">The password hash/derived key, which is <code>length</code> bytes long.<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-8.1">
+          <p id="section-3-8.1.1">The password hash/derived key, which is <code>length</code> bytes long.<a href="#section-3-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-8">Steps:<a href="#section-3-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-9">
+<p id="section-3-9">Steps:<a href="#section-3-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-10">
 <pre>
 outputs = BlockArray(parallelism, HASH_LEN)
 
@@ -1415,7 +1416,7 @@ for i = 0 to reps
     result = result || previous
 
 return result.Slice(0, length)
-</pre><a href="#section-3-9" class="pilcrow">¶</a>
+</pre><a href="#section-3-10" class="pilcrow">¶</a>
 </div>
 </section>
 </div>

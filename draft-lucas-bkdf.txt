@@ -236,6 +236,10 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associate
        for the user from the derived key, context information, and the
        XORed outputs.
 
+   Note that the internal function calls MUST be implemented in
+   parallel, not serially.  Otherwise, the parallelism parameter
+   essentially becomes another timeCost parameter.
+
    Inputs:
 
    *  password: the password to be hashed, which MUST NOT be greater
