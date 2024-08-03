@@ -88,7 +88,7 @@ Table of Contents
 1.  Introduction
 
    BKDF is a memory-hard password hashing and password-based key
-   derivation function based on Balloon [BCS16], which was published
+   derivation function based on Balloon [BCS16], an algorithm published
    shortly after the Password Hashing Competition (PHC).  It has several
    advantages over prior password hashing algorithms:
 
