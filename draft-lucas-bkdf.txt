@@ -181,7 +181,8 @@ Table of Contents
 
    *  HASH_LEN: the output length of the hash function in bytes.  For an
       XOF, this MUST be the nearest power of 2 to the block size (e.g.
-      128 bytes for SHAKE128 [FIPS202]).
+      128 bytes for SHAKE128 [FIPS202] and 64 bytes for BLAKE3
+      [BLAKE3]).
 
    *  MAX_PASSWORD: the maximum password length, which is 4294967295
       bytes.
@@ -626,6 +627,11 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
 11.  References
 
 11.1.  Normative References
+
+   [BLAKE3]   O'Connor, J., Aumasson, J.-P., Neves, S., and Z. Wilcox-
+              O’Hearn, "BLAKE3: one function, fast everywhere", 2020,
+              <https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/
+              blake3.pdf>.
 
    [FIPS202]  National Institute of Standards and Technology, "FIPS PUB
               202 - SHA-3 Standard: Permutation-Based Hash and

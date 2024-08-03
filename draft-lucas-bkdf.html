@@ -1286,7 +1286,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-2-5">Constants:<a href="#section-2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-6.1">
-          <p id="section-2-6.1.1"><code>HASH_LEN</code>: the output length of the hash function in bytes. For an XOF, this <span class="bcp14">MUST</span> be the nearest power of 2 to the block size (e.g. 128 bytes for SHAKE128 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>).<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.1.1"><code>HASH_LEN</code>: the output length of the hash function in bytes. For an XOF, this <span class="bcp14">MUST</span> be the nearest power of 2 to the block size (e.g. 128 bytes for SHAKE128 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span> and 64 bytes for BLAKE3 <span>[<a href="#BLAKE3" class="cite xref">BLAKE3</a>]</span>).<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-6.2">
           <p id="section-2-6.2.1"><code>MAX_PASSWORD</code>: the maximum password length, which is 4294967295 bytes.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
@@ -1696,6 +1696,10 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
 <a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="BLAKE3">[BLAKE3]</dt>
+        <dd>
+<span class="refAuthor">O'Connor, J.</span>, <span class="refAuthor">Aumasson, J.-P.</span>, <span class="refAuthor">Neves, S.</span>, and <span class="refAuthor">Z. Wilcox-O’Hearn</span>, <span class="refTitle">"BLAKE3: one function, fast everywhere"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf">https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="FIPS202">[FIPS202]</dt>
         <dd>
 <span class="refAuthor">National Institute of Standards and Technology</span>, <span class="refTitle">"FIPS PUB 202 - SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions"</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://doi.org/10.6028/NIST.FIPS.202">https://doi.org/10.6028/NIST.FIPS.202</a>&gt;</span>. </dd>
