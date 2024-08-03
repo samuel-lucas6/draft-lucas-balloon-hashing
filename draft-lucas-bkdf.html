@@ -1259,7 +1259,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <p id="section-2-4.8.1"><code>ByteArray(l)</code>: the creation of a new byte array with length <code>l</code>.<a href="#section-2-4.8.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.9">
-          <p id="section-2-4.9.1"><code>BlockArray(i, l)</code>: the creation of a new array of arrays containing <code>i</code> byte arrays, each with length <code>l</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
+          <p id="section-2-4.9.1"><code>BlockArray(b, l)</code>: the creation of a new array of arrays containing <code>b</code> byte arrays, each with length <code>l</code>.<a href="#section-2-4.9.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-4.10">
           <p id="section-2-4.10.1"><code>PRF(k, m)</code>: the output of a collision-resistant PRF (e.g. HMAC-SHA512 <span>[<a href="#RFC2104" class="cite xref">RFC2104</a>]</span>) with key <code>k</code> and message <code>m</code>, both byte arrays. If the collision-resistant hash function supports a key parameter (e.g. BLAKE2b <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>), that parameter <span class="bcp14">MUST</span> be used. Otherwise, if there is no key parameter (e.g. SHA-512 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>), you <span class="bcp14">MUST</span> perform prefix MAC and pad the key with zeros to the block size (1024 bits for SHA-512).<a href="#section-2-4.10.1" class="pilcrow">¶</a></p>

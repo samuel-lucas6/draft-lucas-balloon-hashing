@@ -151,8 +151,8 @@ Table of Contents
 
    *  ByteArray(l): the creation of a new byte array with length l.
 
-   *  BlockArray(i, l): the creation of a new array of arrays containing
-      i byte arrays, each with length l.
+   *  BlockArray(b, l): the creation of a new array of arrays containing
+      b byte arrays, each with length l.
 
    *  PRF(k, m): the output of a collision-resistant PRF (e.g.  HMAC-
       SHA512 [RFC2104]) with key k and message m, both byte arrays.  If
