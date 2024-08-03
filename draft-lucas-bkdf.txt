@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                              27 July 2024
-Expires: 28 January 2025
+Intended status: Informational                             3 August 2024
+Expires: 4 February 2025
 
 
                  Balloon Key Derivation Function (BKDF)
@@ -13,12 +13,11 @@ Expires: 28 January 2025
 
 Abstract
 
-   This document describes the Balloon key derivation function (BKDF), a
-   memory-hard function suitable for password hashing and password-based
-   key derivation.  It has proven memory-hardness properties, is
-   resistant to cache-timing attacks, is easy to implement, and is built
-   from any collision-resistant pseudorandom function (PRF), hash
-   function, or extendable-output function (XOF).
+   This document specifies the Balloon key derivation function (BKDF)
+   for password hashing and password-based key derivation.  It is
+   memory-hard, resistant to cache-timing attacks, easy to implement,
+   and can be instantiated using any collision-resistant pseudorandom
+   function (PRF), hash function, or extendable-output function (XOF).
 
 About This Document
 
@@ -47,7 +46,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 January 2025.
+   This Internet-Draft will expire on 4 February 2025.
 
 Copyright Notice
 
