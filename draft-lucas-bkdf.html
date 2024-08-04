@@ -1475,8 +1475,8 @@ buffer = BlockArray(spaceCost, HASH_LEN)
 counter = 0
 emptyKey = ZeroPad(ByteArray(0), HASH_LEN)
 pseudorandom = ByteArray(0)
-iterations = (spaceCost * timeCost * 3) / (HASH_LEN / 4)
-for i = 0 to iterations - 1
+reps = (spaceCost * timeCost * 3) / (HASH_LEN / 4)
+for i = 0 to reps - 1
     pseudorandom = pseudorandom || PRF(emptyKey, LE64(counter++) || LE32(spaceCost) || LE32(timeCost) || LE32(parallelism) || LE32(iteration))
 
 buffer[0] = PRF(key, LE64(counter++) || LE32(spaceCost) || LE32(timeCost) || LE32(parallelism) || LE32(iteration))
