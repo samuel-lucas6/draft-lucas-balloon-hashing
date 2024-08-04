@@ -175,7 +175,7 @@ Table of Contents
    *  Ceiling(x): the floating point x rounded up to the nearest whole
       number.
 
-   *  UTF8(s): the UTF-8 encoding of string s.
+   *  UTF8(s): the UTF-8 [RFC3629] encoding of string s.
 
    Constants:
 
@@ -647,6 +647,10 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
+              2003, <https://www.rfc-editor.org/rfc/rfc3629>.
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
