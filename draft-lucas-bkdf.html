@@ -1544,7 +1544,7 @@ return previous
       <h2 id="name-choosing-the-hash-function">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-choosing-the-hash-function" class="section-name selfRef">Choosing the Hash Function</a>
       </h2>
-<p id="section-6-1">The choice of collision-resistant hash function affects the performance and security of BKDF in two ways:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The choice of collision-resistant hash function affects the performance and security of BKDF in three ways:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-2">
 <li id="section-6-2.1">
           <p id="section-6-2.1.1">For the same parameters, the attacker has an advantage if the algorithm is faster in hardware versus software. They will be able to do the computation in less time than the defender.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
@@ -1552,8 +1552,11 @@ return previous
         <li id="section-6-2.2">
           <p id="section-6-2.2.1">For the same delay, the defender will be forced to use smaller parameters with a slower collision-resistant hash function in software. Using a faster algorithm in software means stronger parameters can be used.<a href="#section-6-2.2.1" class="pilcrow">¶</a></p>
 </li>
+        <li id="section-6-2.3">
+          <p id="section-6-2.3.1">A smaller output length worsens the performance and memory-hardness.<a href="#section-6-2.3.1" class="pilcrow">¶</a></p>
+</li>
       </ol>
-<p id="section-6-3">It is <span class="bcp14">RECOMMENDED</span> to use a collision-resistant hash function that is fast in software but relatively slow in hardware, such as BLAKE2b <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>. As another example, SHA-512 is preferable to SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>. Finally, SHA-3 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span> is <span class="bcp14">NOT RECOMMENDED</span> as it is slower in software compared to in hardware.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-3">It is <span class="bcp14">RECOMMENDED</span> to use a collision-resistant hash function with a larger output length that is fast in software but relatively slow in hardware, such as BLAKE2b-512 <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>. As another example, SHA-512 is preferable to SHA-256 <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>. Finally, SHA-3 <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span> is <span class="bcp14">NOT RECOMMENDED</span> as it is slower in software compared to in hardware.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="choosing-the-parameters">
