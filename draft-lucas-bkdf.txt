@@ -4,8 +4,8 @@
 
 Network Working Group                                           S. Lucas
 Internet-Draft                                    Individual Contributor
-Intended status: Informational                             3 August 2024
-Expires: 4 February 2025
+Intended status: Informational                             4 August 2024
+Expires: 5 February 2025
 
 
                  Balloon Key Derivation Function (BKDF)
@@ -46,7 +46,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 February 2025.
+   This Internet-Draft will expire on 5 February 2025.
 
 Copyright Notice
 
@@ -229,7 +229,7 @@ BKDF(password, salt, spaceCost, timeCost, parallelism, length, pepper, associate
        and associated data.
 
    2.  Parallelism: the internal function, which uses the derived key as
-       well as other user provided parameters, is called in parallel,
+       well as other user-provided parameters, is called in parallel,
        and the outputs are XORed together.
 
    3.  KDF Expand: a KDF in feedback mode is used to derive key material
@@ -315,7 +315,7 @@ return result.Slice(0, length)
    memory hardness.  It can be divided into three steps:
 
    1.  Expand: a large buffer is filled with pseudorandom bytes derived
-       by hashing user provided parameters and domain separation before
+       by hashing user-provided parameters and domain separation before
        repeatedly hashing the previous output.
 
    2.  Mix: the buffer is mixed for the number of rounds specified by
