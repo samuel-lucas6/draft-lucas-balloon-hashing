@@ -67,7 +67,7 @@ Table of Contents
    4.  The BalloonCore Function
    5.  Implementation Considerations
    6.  Choosing the Hash Function
-   7.  Choosing the Parameters
+   7.  Choosing the Cost Parameters
    8.  Encoding Password Hashes
    9.  Security Considerations
      9.1.  Usage Guidelines
@@ -77,7 +77,7 @@ Table of Contents
      11.1.  Normative References
      11.2.  Informative References
    Appendix A.  Test Vectors
-     A.1.  BKDF-SHA-256
+     A.1.  BKDF-SHA256
        A.1.1.  Test Vector 1
        A.1.2.  Test Vector 2
        A.1.3.  Test Vector 3
@@ -431,7 +431,7 @@ return previous
    is preferable to SHA-256 [RFC6234].  Finally, SHA-3 [FIPS202] is NOT
    RECOMMENDED as it is slower in software compared to in hardware.
 
-7.  Choosing the Parameters
+7.  Choosing the Cost Parameters
 
    The higher the spaceCost and timeCost, the longer it takes to compute
    an output.  If these values are too small, security is unnecessarily
@@ -452,7 +452,8 @@ return previous
        algorithm on any type of user device, set the parallelism to 1.
        This avoids resource exhaustion attacks and slowdowns on machines
        with few CPU cores.  Otherwise, set it to the maximum number of
-       CPU cores the machine can dedicate to the computation.
+       CPU cores the machine can dedicate to the computation (e.g. 4
+       cores).
 
    2.  Establish the maximum acceptable delay for the user.  For
        example, 100-500 ms for authentication, 250-1000 ms for file
@@ -466,7 +467,8 @@ return previous
 
    4.  Convert the closest MiB/GiB memory size that is a power of 2 to
        bytes.  Then set spaceCost to log2(bytes / HASH_LEN), which is
-       the binary logarithm of the number of blocks.
+       the binary logarithm of the number of blocks divided by the BKDF
+       block size.
 
    5.  Find the timeCost that brings you closest to the maximum
        acceptable delay or target number of authentication attempts per
@@ -492,14 +494,11 @@ return previous
    *  HMAC-SHA512: m=256 KiB, t=26; m=512 KiB, t=13; m=1 MiB, t=7; m=2
       MiB, t=3
 
-   In all cases, it is RECOMMENDED to use a 128-bit salt.  However, a
-   64-bit salt MAY be used if there are storage constraints.
-   Regardless, the salt length SHOULD NOT vary in your protocol/
-   application.  See Section 9 for guidance on generating the salt.
+   Note that these are example minimum parameters at the time of
+   writing.  They will not be appropraite minimums in the future, and
+   you SHOULD use stronger parameters if you can afford to.
 
-   For password hashing, it is RECOMMENDED to use a length of 128 or 256
-   bits.  For key derivation, it is RECOMMENDED to use a length of at
-   least 128 bits.
+   See Section 9 for guidance on the other parameters.
 
 8.  Encoding Password Hashes
 
@@ -526,7 +525,7 @@ return previous
    *  salt: the salt encoded in Base64 with no padding [RFC4648].
 
    *  hash: the full/untruncated BKDF output encoded in Base64 with no
-      padding [RFC4648].
+      padding [RFC4648].  See Section 9 for guidance on the length.
 
    Here is an example encoded hash:
 
@@ -547,6 +546,11 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
    password from memory once it is no longer required.  Otherwise, an
    attacker may be able to recover the password from memory or the disk.
 
+   In all cases, it is RECOMMENDED to use a 128-bit salt.  However, a
+   64-bit salt MAY be used if there are storage constraints.
+   Regardless, the salt length SHOULD NOT vary in your protocol/
+   application.
+
    The salt MUST be unique each time you call the function unless
    verifying a password hash or deriving the same key.  It SHOULD be
    randomly generated using a cryptographically secure pseudorandom
@@ -557,6 +561,10 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
    avoid denial-of-service and user frustration whilst ensuring adequate
    protection against password cracking.  See the Section 7 section for
    more information.
+
+   For password hashing, it is RECOMMENDED to use a length of 128 or 256
+   bits.  For key derivation, it is RECOMMENDED to use a length of at
+   least 128 bits.
 
    If you want to derive multiple keys (e.g. for encryption and
    authentication), you MUST only run the algorithm once and use
@@ -744,7 +752,7 @@ $bkdf-sha256$v=1$m=32,t=3,p=1$ZXhhbXBsZXNhbHQ$cWBD3/d3tEqnuI3LqxLAeKvs+snSicW1GV
 
 Appendix A.  Test Vectors
 
-A.1.  BKDF-SHA-256
+A.1.  BKDF-SHA256
 
    NOTE: These test vectors are out of date and will be updated when the
    new design has been finalised.
